@@ -10,10 +10,10 @@
 }
 </style>
 
-<?php include '../connect.php' ?>
+<?php $connect = mysqli_connect("localhost", "root", "akom2006", "project"); ?>
 
-<?php $sql ="SELECT * FROM good";
-      $result = mysqli_query($con , $sql);
+<?php $sql ="SELECT * FROM goods";
+      $result = mysqli_query($connect , $sql);
 ?>
 
 
@@ -24,7 +24,7 @@
                 GOODS ORDER
             </a>
             <a type="button" href="?page=<?= $_GET['page'] ?>&function=insert" class="btn rounded-pill"><img src="../images/add-user.png"
-                    width="80px"></a>
+                    width="80px" style="display:none;"></a>
         </div>
     </nav>
 <br>

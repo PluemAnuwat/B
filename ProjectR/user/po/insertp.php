@@ -11,8 +11,9 @@ session_start();
 
 
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    เลือกรายการสินค้า
+<button type="button"  class="btn rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<img src="../images/list.png" width="50" height="50px">
+<p>รายการสินค้า</p>
 </button>
 
 <!-- <a  href="insertsqlp.php" class="btn" style="border:none;"><img src="../images/check11.png" width="7%"></a > -->
@@ -22,17 +23,22 @@ session_start();
 
 
 
+<style>
+    .modal {
+  background: gray;
+  position: absolute;
+  float: left;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
 
 
 
 
-
-
-
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg">
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-body">
                 <table class="table table-bordered" id="example">
@@ -51,8 +57,7 @@ session_start();
                         <tr>
                             <td><?php echo $objResult["product_name"];?></td>
                             <td><?php echo $objResult["product_quantity"];?></td>
-                            <td><a href="order.php?product_id=<?php echo $objResult["product_id"];?>"><img
-                                        src="../images/check.png" width="10%"></a></td>
+                            <td><a href="order.php?product_id=<?php echo $objResult["product_id"];?>"><img src="../images/check.png" width="10%"></a></td>
                         </tr>
                         <?php
   }
@@ -90,7 +95,40 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
  ?>
 
 <form action="insertsqlp.php" method="post">
+<div class="row">
+    <div class="col-md-6">
+        ซัพพลายเซน
+        <select type="text" class="form-control" name="po_saler">
+            <?php
+                    $sql = "SELECT * FROM suppiles ";
+                    $query =  mysqli_query($connect, $sql);
+                    foreach ($query as $data) : ?>
+            <option value="<?= $data['suppiles_id'] ?>"><?= $data['suppiles_name'] ?></option>
+            <?php endforeach; ?>
+        </select>
 
+    </div>
+    <div class="col-md-3">
+        เลขที่เอกสาร
+        <input type="text" class="form-control" type="text" name="po_RefNo" value="PO-<?= $s ?>">
+    </div>
+    <div class="col-md-3">
+        วันที่ออกเอกสาร
+        <p><?php echo $date ?></p>
+    </div>
+</div>
+
+<br>
+<table class="table table-bordered">
+    <tr>
+        <th>ผู้ขอซื้อ</th>
+        <th>ผู้สั่งซื้อ</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
 
     <table class="table table-bordered">
         <tr>
@@ -107,42 +145,10 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
 $Total = 0;
 $SumTotal = 0;
 
+
 for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
 { ?>
-        <div class="row">
-            <div class="col-md-6">
-                ซัพพลายเซน
-                <select type="text" class="form-control" name="po_saler">
-                    <?php
-                    $sql = "SELECT * FROM suppiles ";
-                    $query =  mysqli_query($connect, $sql);
-                    foreach ($query as $data) : ?>
-                    <option value="<?= $data['suppiles_id'] ?>"><?= $data['suppiles_name'] ?></option>
-                    <?php endforeach; ?>
-                </select>
 
-            </div>
-            <div class="col-md-3">
-                เลขที่เอกสาร
-                <input type="text" class="form-control" type="text" name="po_RefNo" value="PO-<?= $s ?>">
-            </div>
-            <div class="col-md-3">
-                วันที่ออกเอกสาร
-                <p><?php echo $date ?></p>
-            </div>
-        </div>
-
-        <br>
-        <table class="table table-bordered">
-            <tr>
-                <th>ผู้ขอซื้อ</th>
-                <th>ผู้สั่งซื้อ</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
 
         <?php
   if($_SESSION["strProductID4000"][$i] != "")
@@ -185,7 +191,7 @@ for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
             <td></td>
         </tr>
     </table>
-    <input type="submit" name="Submit" value="Submit">
+    <button type="submit"  class="btn rounded-pill"  name="Submit" value="Submit"><img src="../images/check.png" width="50" height="50px">
 
 
 </form>

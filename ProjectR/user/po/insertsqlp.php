@@ -12,7 +12,7 @@ $connect = mysqli_connect("localhost","root","akom2006","project");
 
   mysqli_query($connect , $strSQL) or die(mysqli_error());
 
-  $strOrderID = mysqli_insert_id();
+  $strOrderID = mysqli_insert_id($connect);
 
   for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
   {

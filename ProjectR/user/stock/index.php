@@ -8,7 +8,7 @@
             <?php include 'ul.php' ?>
             <?php
                           if (!isset($_GET['page']) && empty($_GET['page'])) {
-                            include('dashboard.php');
+                            include('indexs.php');
                           } elseif (isset($_GET['page']) && $_GET['page'] == 'stock') {
                             if (isset($_GET['function']) && $_GET['function'] == 'insert') {
                               include('inserts.php');

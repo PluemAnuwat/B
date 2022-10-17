@@ -10,10 +10,10 @@
 }
 </style>
 
-<?php include '../connect.php' ?>
+<?php $connect = mysqli_connect("localhost", "root", "akom2006", "project"); ?>
 
 <?php $sql ="SELECT * FROM employee WHERE employee_role = 'เจ้าของกิจการ' ";
-      $result = mysqli_query($con , $sql);
+      $result = mysqli_query($connect , $sql);
 ?>
 
     <table class="table table-hover" id="example">

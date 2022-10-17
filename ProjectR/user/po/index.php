@@ -19,8 +19,10 @@
                           } elseif (isset($_GET['page']) && $_GET['page'] == 'manager_po') {
                             if (isset($_GET['function']) && $_GET['function'] == 'insert') {
                               include('insertm.php');
-                            } elseif (isset($_GET['function']) && $_GET['function'] == 'update') {
-                              include('updatem.php');
+                            } elseif (isset($_GET['function']) && $_GET['function'] == 'good') {
+                              include('insertsqlmg.php');
+                            } elseif (isset($_GET['function']) && $_GET['function'] == 'cancel') {
+                              include('cancelsqlmg.php');
                             } else {
                               include('indexm.php');
                             }

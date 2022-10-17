@@ -83,8 +83,13 @@ $query2  = mysqli_query($con, $sql2);
 
             <!-- ตะกร้าาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาาา -->
             <div class="col-md-6">
+
+                <input type="text" id="show" class="form-control text-right text-red" style="font-size:50px;">
+
+                <hr>
                 <div class="card">
                     <span id="cart">
+
                         <table class="table table-hover shopping-cart-wrap">
                             <thead class="text-muted">
                                 <tr>
@@ -130,12 +135,14 @@ $query2  = mysqli_query($con, $sql2);
                                     </td>
 
                                     <td class="text-center">
-                                        <div class="m-btn-group m-btn-group-pill btn-group mr-0" role="group" aria-label="...">
+                                        <div class="m-btn-group m-btn-group-pill btn-group mr-0" role="group"
+                                            aria-label="...">
                                             <button type="button" onclick="delnum()" class="m-btn btn btn-default"><i
                                                     class="fa fa-minus"></i></button>
                                             <button type="button" class="m-btn btn btn-default" disabled>
-                                                <input name="txtint" type="text" id="txtint" 
-                                                    value=<?php echo $_SESSION["strQty1"][$i]; ?> style="width:40px;border-white">
+                                                <input name="txtint" type="text" id="txtint"
+                                                    value=<?php echo $_SESSION["strQty1"][$i]; ?>
+                                                    style="width:40px;border-white">
                                             </button>
                                             <button onclick="addnum()" type="button" class="m-btn btn btn-default"><i
                                                     class="fa fa-plus"></i></button>
@@ -176,28 +183,87 @@ $query2  = mysqli_query($con, $sql2);
                     </dl> -->
                     <dl class="dlist-align">
                         <dt>ยอดเงินรวม:</dt>
-                        <dd class="text-right"><?php echo $SumTotal ?> </dd>
+                        <dd class="text-right"><?php echo number_format($SumTotal,2) ?> </dd>
                     </dl>
                     <dl class="dlist-align">
                         <dt>ราคาทั้งหมด: </dt>
-                        <dd class="text-right h4 b"> <?php echo $VatTotal ?> </dd>
+                        <dd class="text-right h4 b"> <?php echo number_format($VatTotal,2) ?> </dd>
                     </dl>
                     <br>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6">
                             <a href="#" class="btn  btn-primary btn-lg btn-block"><i class="fa fa-shopping-bag"></i>
                                 ยืนยันการขาย </a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
+
+                <style>
+                .btncolor {
+                    background: purple;
+                    border: solid 0px;
+                    ;
+                    font-weight: bold;
+                }
+
+                </style>
+              
+             
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <center>
+                <div class="col-md-12">
+                    <input class="btn btn-secondary mt-2 " style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="7" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="8" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="9" onclick="inputnum(this.value)">
+                        <a class="btn mt-2 btn-danger" style="width:20%;height:20%;font-size:40px;" type="button"><img
+                            src="../images/budget.png" style="width:50%;height:50%;"></a>
+                </div>
+                <div class="col-md-12">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="4" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="5" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="6" onclick="inputnum(this.value)">
+                        <a class="btn mt-2 btn-success" style="width:20%;height:20%;font-size:40px;" type="button"><img
+                            src="../images/budget.png" style="width:50%;height:50%;"></a>
+                </div>
+                <div class="col-md-12">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="1" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="2" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="3" onclick="inputnum(this.value)">
+                        <a class="btn mt-2 btn-primary" style="width:20%;height:20%;font-size:40px;" type="button"><img
+                            src="../images/budget.png" style="width:50%;height:50%;"></a>
+                </div>
+                <div class="col-md-12">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="0" onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="." onclick="inputnum(this.value)">
+                    <input class="btn btn-secondary mt-2" style="width:20%;height:20%;font-size:40px;" type="button"
+                        id="txt" value="00" onclick="inputnum(this.value)">
+                    <a class="btn mt-2 btncolor" style="width:20%;height:20%;font-size:40px;" type="button"><img
+                            src="../images/money.png" style="width:50%;height:50%;"></a>
+                </div>
+                </center>
+    </div>
+  </div>
+</nav>
+
 
 
             </div>
 
         </div>
     </div>
-
-
 
     <?php require 'include/script.php' ?>
 
@@ -212,5 +278,13 @@ function addnum() {
 
 function delnum() {
     document.all.txtint.value--;
+}
+</script>
+
+
+
+<script type="text/javascript">
+function inputnum(a) {
+    document.getElementById("show").value += a;
 }
 </script>
