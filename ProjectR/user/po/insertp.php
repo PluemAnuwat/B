@@ -9,13 +9,15 @@ $objQuery = mysqli_query($connect , $strSQL)  or die(mysqli_error());
 session_start();
 ?>
 
-
+<form action="insertsqlp.php" method="post">
 
 <button type="button"  class="btn rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
-<img src="../images/list.png" width="50" height="50px">
+<img src="../images/list.png" width="30px" height="30px">
 <p>รายการสินค้า</p>
 </button>
-
+    <button type="submit"  class="btn rounded-pill"  name="Submit" value="Submit"><img src="../images/check.png" width="30px" height="30px">
+    <p>ยืนยันการสั่งซื้อ</p>   
+</button>
 <!-- <a  href="insertsqlp.php" class="btn" style="border:none;"><img src="../images/check11.png" width="7%"></a > -->
 
 <hr>
@@ -94,7 +96,7 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
  $date = date('Y-m-d H:i:s');
  ?>
 
-<form action="insertsqlp.php" method="post">
+
 <div class="row">
     <div class="col-md-6">
         ซัพพลายเซน
@@ -130,8 +132,8 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
     </tr>
 </table>
 
-    <table class="table table-bordered">
-        <tr>
+    <table class="table table-bordered table-striped">
+        <tr class="bg-secondary text-white">
             <th>รหัสสินค้า</th>
             <th>รายการสินค้า</th>
             <th>ราคาต่อหน่วย</th>
@@ -191,8 +193,7 @@ for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
             <td></td>
         </tr>
     </table>
-    <button type="submit"  class="btn rounded-pill"  name="Submit" value="Submit"><img src="../images/check.png" width="50" height="50px">
-
+   
 
 </form>
 

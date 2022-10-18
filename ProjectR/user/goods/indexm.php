@@ -20,7 +20,7 @@ END AS status ,
 count(a.good_RefNo) AS count 
 FROM goods a 
 INNER JOIN goods_detailproduct b ON a.good_id = b.goods_detailproid
-WHERE a.good_status = 0  
+WHERE a.good_status = 0   AND b.product_start_date <> ''
 GROUP BY  a.good_RefNo DESC";
       $result = mysqli_query($connect , $sql);
 ?>
@@ -41,9 +41,9 @@ GROUP BY  a.good_RefNo DESC";
         <tr>
             <th scope="col">ลำดับ</th>
             <th scope="col">วันที่ออกใบรับสินค้า</th>
-            <th scope="col">หมายเลขใบรับสินค้า</th>
-            <th scope="col">หมายเลขใบสั่งซื้อสินค้า</th>
-            <th scope="col">จำนวนรายการสินค้า</th>
+            <th scope="col">หมายเลขใบรับ</th>
+            <th scope="col">หมายเลขใบสั่งซื้อ</th>
+            <th scope="col">จำนวน</th>
             <th scope="col">ผู้สั่งซื้อ</th>
             <th scope="col">สถานะของใบรับสินค้า</th>
             <th scope="col">ทำการส่งสินค้า</th>

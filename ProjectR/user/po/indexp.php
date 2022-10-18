@@ -49,7 +49,7 @@
         <tr>
             <td class="col-2"><?php echo $i++ ?></td>
             <td class="col-2"><?php echo  $row['po_RefNo'] ?></td>
-            <td class="col-2"><?php echo  ($row['po_create']) ?></td>
+            <td class="col-2"><?php echo  $row['po_create'] ?></td>
             <td class="col-2"><?php echo  $row['partner_name'] ?></td>
             <td class="col-2"><?php echo  $row['count'] ?></td>
             <td scope="row"><img src="../images/delete.png" width="20px"></td>

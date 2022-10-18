@@ -57,7 +57,7 @@
                       echo '<br>'; ?>
                 <?php  } ?>
             </td>  
-            <td scope="row"><img src="../images/cencle.png" width="20px"></td>
+            <td scope="row"></td>
             <td scope="row"><?php echo $row['po_buyer']?></td>
             <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=good&po_RefNo=<?php echo $row['po_RefNo'] ?>"><img src="../images/yes.png" width="25px"></a></td>
             <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=cancel&po_RefNo=<?php echo $row['po_RefNo'] ?>"><img src="../images/cencle.png" width="25px"></a></td>

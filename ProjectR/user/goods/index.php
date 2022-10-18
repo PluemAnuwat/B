@@ -14,6 +14,10 @@
                               include('insertg.php');
                             } elseif (isset($_GET['function']) && $_GET['function'] == 'update') {
                               include('updateg.php');
+                            } elseif (isset($_GET['function']) && $_GET['function'] == 'detail') {
+                              include('indexmdate.php');
+                            } elseif (isset($_GET['function']) && $_GET['function'] == 'insertwaitsend') {
+                              include('insertwaitsend.php');
                             } else {
                               include('indexg.php');
                             }
@@ -22,6 +26,7 @@
                               include('insertm.php');
                             } elseif (isset($_GET['function']) && $_GET['function'] == 'update') {
                               include('updatem.php');
+
                             } else {
                               include('indexm.php');
                             }
