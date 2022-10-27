@@ -29,10 +29,10 @@
                     <td>ราคา</td>
                 </tr>
                 <tbody>
-                    <?php
-                    $sql = "SELECT *  ,(c.product_price_cost * a.product_quantity) as plusel   FROM view_good_show a left join view_product_detail b on 
-                                 a.product_id = b.product_id left join view_product_price c on a.product_id = c.product_id  WHERE a.good_RefNo = '$good_RefNo'";
-                    $query = mysqli_query($con, $sql);
+                <?php
+                    $sql = "SELECT *  ,(d.product_price_cost * a.product_quantity) as plusel , a.product_quantity AS product_qty FROM   goods_detailproduct a JOIN product b ON a.product_id = b.product_id 
+                    JOIN product_quantity c ON b.product_id = c.product_id JOIN product_price d ON a.product_id = d.product_id   WHERE a.po_RefNo = '$po_RefNo'";
+                    $query = mysqli_query($connect, $sql);
                     while ($rowp = mysqli_fetch_assoc($query)) {
 
                     ?>

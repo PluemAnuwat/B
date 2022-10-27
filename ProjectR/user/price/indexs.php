@@ -1,0 +1,44 @@
+<style>
+.bgc {
+    background-color: purple;
+}
+
+.borderstyle {
+    border-style: solid;
+    border-width: 5px;
+    border-color: purple;
+}
+</style>
+
+<?php require 'script.php' ?>
+
+<nav class="navbar navbar-light bgc">
+    <div class="container-fluid">
+        <a href=javascript:history.back(1)><img src="../images/back1.png" width="80px"></a>
+        <a class="navbar-brand text-white" href="#">
+            MANAGER SALE PRODUCT
+        </a>
+        <a  type="button" name="add" id="add" class="btn rounded-pill"><img src="../images/money-management.png"
+                width="80px"></a>
+    </div>
+</nav>
+
+<div class="container box">
+    <div class="table-responsive">
+        <br />
+        <div id="alert_message"></div>
+        <table id="user_data" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">รหัสสินค้า</th>
+                    <th scope="col">ชื่อสินค้า</th>
+                    <th scope="col">ราคาทุน</th>
+                    <th scope="col">ราคาขาย</th>
+                    <th scope="col">เมนู</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript" src="insert.js"></script>

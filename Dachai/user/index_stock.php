@@ -54,7 +54,7 @@
                              <thead>
                                      <tr class="text-nowrap bg-primary">
                                          <th>ลำดับ</th>
-                                         <th>ชื่อสินค้า</th>
+                                         <th>รายการสินค้า</th>
                                          <th>จำนวนสินค้า</th>
                                          <th>ราคาทุน</th>
                                          <th>ราคาขาย</th>

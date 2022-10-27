@@ -32,7 +32,7 @@
                 <?php } else {  ?>
                     <td class="col-2"><a class="text-success"><?php echo  $rowp['status'] ?></a></td>
                 <?php } ?>
-                <td><a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $rowp['good_RefNo'] ?>" class="btn  btn-primary">รายละเอียด</a>
+                <td><a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $rowp['good_RefNo'] ?>"><img src="../images/prepare.png"></a>
                 </td>
             </tr>
         <?php } ?>
