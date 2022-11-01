@@ -15,6 +15,8 @@
                               include('deletep.php');
                             } elseif (isset($_GET['function']) && $_GET['function'] == 'detail') {
                               include('detailp.php');
+                            } elseif (isset($_GET['function']) && $_GET['function'] == 'reportp') {
+                              include('reportp.php');
                             } else {
                               include('indexp.php');
                             }

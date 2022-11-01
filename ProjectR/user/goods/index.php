@@ -35,7 +35,7 @@
                             if (isset($_GET['function']) && $_GET['function'] == 'insert') {
                               include('insertm_test.php');
                             } elseif (isset($_GET['function']) && $_GET['function'] == 'delete') {
-                              include('deletem_test.php');
+                              include('deletem.php');
                             } elseif (isset($_GET['function']) && $_GET['function'] == 'detail') {
                               include('indexmdate_test.php');
                             } else {

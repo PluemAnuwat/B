@@ -30,11 +30,13 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
 
 
 <a href=javascript:history.back(1)><img src="../images/back1.png" width="80px"></a>
+<!-- <a  class="btn btn-primary" href="?page=<?= $_GET['page'] ?>&function=reportp&po_RefNo=<?php echo  $result1['po_RefNo'] ?>">PDF</a> -->
 <div class="card">
     <div class="card-body">
 
         <div>ร้านขายยาดาชัย์</div>
-        <div>เลขที่ </div>
+        <div>เลขที่  286/3</div>
+        <div>เขต มีนบุรี</div>
         <div>เเขวง จังหวัด กรุงเทพมหานคร</div>
 
         <br>
@@ -42,7 +44,7 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
         <center>
             <h3>รายการใบสั่งซื้อ หมายเลข : <?php echo $po_RefNo ?> </h3>
         </center>
-        <p>ผู้สั่งซื้อ : </p>
+        <p>ผู้สั่งซื้อ : <?php echo $result1['po_buyer'] ?> </p>
         <p>วันที่สั่งซื้อ : <?php echo datethai($po_create) ?></p>
 
 

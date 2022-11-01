@@ -21,7 +21,7 @@ if (isset($_POST) && !empty($_POST)) {
         if ($_SESSION['posit_login']  == 'ผู้ดูแลระบบ') {
             $alert = '<script type="text/javascript">';
             $alert .= 'alert("WELCOME ผู้ดูแลระบบ");';
-            $alert .= 'window.location.href = "../Admin";';
+            $alert .= 'window.location.href = "Admin";';
             $alert .= '</script>';
             echo $alert;
             exit();
@@ -34,7 +34,7 @@ if (isset($_POST) && !empty($_POST)) {
         } elseif ($_SESSION['posit_login'] == 'เจ้าของกิจการ') {
             $alert = '<script type="text/javascript">';
             $alert .= 'alert("WELCOME เจ้าของกิจการ");';
-            $alert .= 'window.location.href = "../Manager";';
+            $alert .= 'window.location.href = "Manager";';
             $alert .= '</script>';
             echo $alert;
             exit();

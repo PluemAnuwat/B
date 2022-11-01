@@ -52,7 +52,7 @@ JOIN product_price d ON a.product_id = d.product_id
             <td><?php echo  $row['unit_name'] ?></td>
             <td><?php echo  $row['type_name'] ?></td>
             <td scope="row"><?php echo  number_format($row['product_price_cost'],2) ?></td>
-            <td scope="row"><img src="../images/edit.png" width="20px"></td>
+            <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=update&product_id=<?= $row['product_id'] ?>" class="btn  btn-warning text-white">Modify</a></td>
             <!-- <td scope="row"><img src="../images/delete.png" width="20px"></td> -->
             <td>  <a href="?page=<?= $_GET['page'] ?>&function=delete&product_id=<?= $row['product_id'] ?>" class="btn  btn-danger  text-white" onclick="return confirm('ยืนยันการลบข้อมูล')"><i class="fa-solid fa-rectangle-xmark "></i>Delete</a></td>
         </tr>

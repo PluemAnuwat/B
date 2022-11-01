@@ -10,9 +10,10 @@
 }
 </style>
 
-<?php $connect = mysqli_connect("localhost", "root", "akom2006", "project"); ?>
+<?php $connect = mysqli_connect("localhost", "root", "akom2006", "project");
+require '../functionDateThai.php';  ?>
 
-<?php $sql ="SELECT * FROM po a JOIN po_detailproduct b ON a.po_id = b.po_id  WHERE a.po_status = 'รอยืนยัน'  group by a.po_id ORDER BY po_create DESC  ";
+<?php $sql ="SELECT * ,a.po_saler,c.suppiles_id,c.suppiles_name AS suppiles_name FROM po a JOIN po_detailproduct b ON a.po_id = b.po_id JOIN suppiles c ON a.po_saler = c.suppiles_id  WHERE a.po_status = 'รอยืนยัน'  group by a.po_id ORDER BY po_create DESC  ";
       $result = mysqli_query($connect , $sql);
 ?>
 
@@ -32,7 +33,7 @@
         <tr>
             <th scope="col">วันที่ออกใบสั่งซื้อ</th>
             <th scope="col">หมายเลขใบสั่งซื้อ</th>
-            <th scope="col">ซื้อจาก</th>
+            <th scope="col">ซัพพลายเซน</th>
             <th scope="col">ยืนยันการสั่งซื้อ</th>
             <th scope="col">ยกเลิกใบสั่งซื้อ</th>
         </tr>
@@ -43,7 +44,7 @@
     while ($row = mysqli_fetch_array($result)) 
     { ?>
         <tr>
-            <td scope="row"><?php echo $row['po_create']?></td>
+            <td scope="row"><?php echo datethai($row['po_create'])?></td>
             <td scope="row"><?php echo $row['po_RefNo']?></td>
             <!-- <td scope="row">
                 <?php 
@@ -56,9 +57,9 @@
                 <?php  } ?>
             </td>   -->
             <!-- <td scope="row"></td> -->
-            <td scope="row"><?php echo $row['po_buyer']?></td>
-            <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=good&po_RefNo=<?php echo $row['po_RefNo'] ?>"><img src="../images/yes.png" width="25px"></a></td>
-            <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?php echo $row['po_RefNo'] ?>"><img src="../images/cencle.png" width="25px"></a></td>
+            <td scope="row"><?php echo $row['suppiles_name']?></td>
+            <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=good&po_RefNo=<?php echo $row['po_RefNo'] ?>" onclick="return confirm('ต้องการสั่งซื้อ  : <?= $row['po_RefNo'] ?> หรือไม่ ??')"><img src="../images/yes.png" width="25px"></a></td>
+            <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?php echo $row['po_RefNo'] ?>" onclick="return confirm('ต้องการยกเลิก  : <?= $row['po_RefNo'] ?> หรือไม่ ??')" ><img src="../images/cencle.png" width="25px"></a></td>
         </tr>
         <?php } ?>
     </tbody>

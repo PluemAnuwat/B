@@ -7,10 +7,9 @@ if (isset($_POST) && !empty($_POST)) {
     $password = $_POST['password'];
 	$sql = "SELECT * FROM employee WHERE username = '".$username."' AND password = '".$password."'";
 	$query = mysqli_query($con, $sql);
-    print_r($sql);
-    exit;
+
 	$row = mysqli_num_rows($query);
-    print_r($query);
+
     // exit;
     if ($row == 1) {
         $result = mysqli_fetch_assoc($query);

@@ -26,9 +26,9 @@
 // AND goods.good_create IS NULL  ";
 $sql = "SELECT DISTINCT(b.po_RefNo) , 
 CASE 
-WHEN b.product_start_date  IS NULL  
-  AND  b.product_end_date  IS NULL   THEN 'ยังไม่ได้จัดเตรียมสินค้า'
- WHEN b.product_end_date  IS NOT NULL   THEN 'จัดเตรียมสินค้าแล้ว'
+WHEN
+    a.good_create  IS NULL   THEN 'ยังไม่ได้จัดเตรียมสินค้า' 
+ WHEN   a.good_create  IS NOT NULL   THEN 'จัดเตรียมสินค้าแล้ว'
    END AS msgstatus
 FROM goods a JOIN goods_detailproduct b ON a.good_id = b.goods_detailproid";
 $result = mysqli_query($connect , $sql);
@@ -56,11 +56,11 @@ $result = mysqli_query($connect , $sql);
             <th scope="col">จำนวน</th>
             <th scope="col">ผู้สั่งซื้อ</th>
             <th scope="col">สถานะของใบรับสินค้า</th>
-            <!-- <th scope="col">จัดเตรียมสินค้า</th> -->
         </tr>
     </thead>
     <tbody>
         <?php 
+        require '../functionDateThai.php';
     $i = 1 ;
     while ($row = mysqli_fetch_array($result)) {
         $row_date = $row['product_start_date'] ; 
@@ -82,36 +82,20 @@ $result = mysqli_query($connect , $sql);
         <tr>
             <td><?php echo $no++; ?></td>
             <td></td>
-            <td></td>
+            <td><?php echo DateThai($rowproduct['po_create']); ?></td>
             <td>
                 <?php echo $rowproduct['product_name'];  echo '<br>'; ?>
             </td>
             <td style="text-align:right;"><?php echo $rowproduct['product_quantity'];  echo '<br>'; ?></td>
             <td><?php echo $rowproduct['po_buyer'];  echo '<br>'; ?></td>
             <td><?php echo $row['msgstatus'] ; ?></td>
-            <td></td>
         </tr>
 
         <?php  } ?>
 
     
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <!-- <td>
-            <?php if($row_date <> "" ){ ?>
-
-            <?php }else{ ?>
-            <a href="?page=<?= $_GET['page'] ?>&function=detail&po_RefNo=<?= $row['po_RefNo'] ?>">
-                <img src="../images/prepare.png" width="30px"></a>
-            <?php } ?>
-        </td>    
-     -->
+      
     </tr>
 
 

@@ -4,8 +4,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 date_default_timezone_set("Asia/Bangkok");
 
-$con = mysqli_connect("localhost", "root", "", "dachai");
-$sql = "SELECT * FROM view_product_stock  ";
+$con = mysqli_connect("localhost", "root", "akom2006", "project");
+$sql = "SELECT * , DATEDIFF(b.product_end_date,b.product_start_date) AS datediff 
+FROM product AS a INNER JOIN product_date b ON a.product_id = b.product_id  
+INNER JOIN product_quantity AS c ON a.product_id = c.product_id   
+INNER JOIN product_reorder AS bbb ON a.product_id = bbb.product_id
+INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id GROUP BY a.product_id   ";
 $result = mysqli_query($con, $sql);
 while ($row = mysqli_fetch_array($result)) { 
 function status_date_notify($endDate)

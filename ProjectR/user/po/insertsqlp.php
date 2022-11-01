@@ -6,9 +6,8 @@ $connect = mysqli_connect("localhost","root","akom2006","project");
   $strSQL = "
 	INSERT INTO po (po_create,po_RefNo,po_buyer,po_saler,po_status)
 	VALUES
-	('".date("Y-m-d H:i:s")."','".$_POST["po_RefNo"]."','0' ,'".$_POST["po_saler"]."','รอยืนยัน') ";
+	('".date("Y-m-d H:i:s")."','".$_POST["po_RefNo"]."','".$_SESSION['posit_login']."' ,'".$_POST["po_saler"]."','รอยืนยัน') ";
 
-  print_r($strSQL);
 
   mysqli_query($connect , $strSQL) or die(mysqli_error());
 
@@ -24,6 +23,9 @@ $connect = mysqli_connect("localhost","root","akom2006","project");
 				('".$strOrderID."','".$_SESSION["strProductID4000"][$i]."','".$_SESSION["strQty"][$i]."') 
 			  ";
 			  mysqli_query($connect , $strSQL) or die(mysqli_error());
+	  }else{
+		echo "<script type='text/javascript'>alert('ไม่มีรายการสินค้า');</script>";
+		header("location:index.php?page=po");
 	  }
   }
 

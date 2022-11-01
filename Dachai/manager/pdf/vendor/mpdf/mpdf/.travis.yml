@@ -14,9 +14,7 @@ php:
   - nightly
 
 matrix:
-
   include:
-
     - env: LINT=1
       php: 7.1
     #- env: COVERAGE=1

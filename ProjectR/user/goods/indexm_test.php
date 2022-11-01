@@ -43,10 +43,11 @@ GROUP BY  a.good_RefNo DESC";
             <th scope="col">วันที่ออกใบรับสินค้า</th>
             <th scope="col">หมายเลขใบรับ</th>
             <th scope="col">หมายเลขใบสั่งซื้อ</th>
-            <th scope="col">จำนวน</th>
+            <th scope="col">จำนวนรายการ</th>
             <th scope="col">ผู้สั่งซื้อ</th>
             <th scope="col">สถานะของใบรับสินค้า</th>
-            <th scope="col">ยกเลิก</th>
+            <th scope="col">โน๊ต</th>
+            <th scope="col">ส่ง</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -70,12 +71,13 @@ GROUP BY  a.good_RefNo DESC";
             <td class="col-2"><a class="text-danger"><img src="../images/waithands.png" width="30px;"><?php echo  $row['status'] ?></a></td>
             <td scope="row"><img src="../images/cencle.png" width="20px"> ยกเลิกได้ </td>
           <td><a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/prepare.png" width="30px"></a>
+          <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/delete.png" width="30px"></a></td>
             <?php } else {  ?>
-            <td class="col-2"><a class="text-success"><img src="../images/handssok.png" width="30px;"><?php echo  $row['status'] ?></a></td>
+            <td class="col-2"><a class="text-success"><img src="../images/handsok.png" width="30px;"><?php echo  $row['status'] ?></a></td>
             <td scope="row"><img src="../images/not-found.png" width="20px"> ยกเลิกไม่ได้ </td>
             <td></td>
+            <td></td>
             <?php } ?>
-          
         </tr>
         <?php } ?>
     </tbody>

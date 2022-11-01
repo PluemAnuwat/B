@@ -1,7 +1,7 @@
 <?php
 $connect = mysqli_connect("localhost","root","akom2006","project");
 // mysqli_select_db("project");
-$strSQL = "SELECT * FROM product";
+$strSQL = "SELECT * FROM product INNER JOIN product_quantity ON product.product_id = product_quantity.product_id INNER JOIN unit ON product.product_unit = unit.unit_id";
 $objQuery = mysqli_query($connect , $strSQL)  or die(mysqli_error());
 ?>
 
@@ -15,7 +15,7 @@ session_start();
 <img src="../images/list.png" width="30px" height="30px">
 <p>รายการสินค้า</p>
 </button>
-    <button type="submit"  class="btn rounded-pill"  name="Submit" value="Submit"><img src="../images/check.png" width="30px" height="30px">
+    <button onclick="return confirm('ต้องการสั่งซื้อหรือไม่ ??')" type="submit"  class="btn rounded-pill"  name="Submit" value="Submit"><img src="../images/check.png" width="30px" height="30px">
     <p>ยืนยันการสั่งซื้อ</p>   
 </button>
 <!-- <a  href="insertsqlp.php" class="btn" style="border:none;"><img src="../images/check11.png" width="7%"></a > -->
@@ -58,7 +58,7 @@ session_start();
                       ?>
                         <tr>
                             <td><?php echo $objResult["product_name"];?></td>
-                            <td><?php echo $objResult["product_quantity"];?></td>
+                            <td class="text-center"><?php echo $objResult["product_quantity"];?>    <?php echo $objResult["unit_name"] ; ?></td>
                             <td><a href="order.php?product_id=<?php echo $objResult["product_id"];?>"><img src="../images/check.png" width="10%"></a></td>
                         </tr>
                         <?php
@@ -131,7 +131,7 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
         <th>ผู้สั่งซื้อ</th>
     </tr>
     <tr>
-        <td></td>
+        <td><?= $_SESSION['posit_login']?> </td>
     </tr>
 </table>
 
@@ -185,7 +185,7 @@ for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
         </tr>
         <tr>
             <td colspan="3"></td>
-            <td class="text-center">ภาษี<input class="form-control text-end" value="7%"></td>
+            <td class="text-center">ภาษี<input class="form-control text-end" value="7%" disabled></td>
             <td class="text-end"><?php echo number_format($SumTotal * 0.07,2) ?></td>
             <td></td>
         </tr>

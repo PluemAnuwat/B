@@ -47,12 +47,12 @@ require '../functionDateThai.php';
         <tr>
             <td class="col-2"><?php echo  $row['po_RefNo'] ?></td>
             <td class="col-2"><?php echo  datethai($row['po_create']) ?></td>
-            <td class="col-2"><?php echo  $row['partner_name'] ?></td>
+            <td class="col-2"><?php echo  $row['po_buyer'] ?></td>
             <td class="col-2"><?php echo  $row['po_status'] ?></td>
             <td scope="row">
             <a href="?page=<?= $_GET['page'] ?>&function=detail&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/detail.png" width="20px"></a>  
             <!-- <a href="?page=<?= $_GET['page'] ?>&function=update&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/yes.png" width="30px"></a>     -->
-            <?php if($row['po_status'] != 'สั่งแล้ว' &&  $row['po_status'] != 'รับสินค้าแล้ว') { ?>
+            <?php if($row['po_status'] != 'สั่งแล้ว' &&  $row['po_status'] != 'รับสินค้าแล้ว' &&  $row['po_status'] != 'ยกเลิก') { ?>
             <a href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/delete.png" width="20px"></a>  
             <?php } ?>
         </tr>

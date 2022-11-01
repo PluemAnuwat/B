@@ -47,9 +47,10 @@
 <?php
    $connect = mysqli_connect("localhost", "root", "akom2006", "project");
    $sql = "SELECT * , DATEDIFF(b.product_end_date,b.product_start_date) AS datediff 
-   FROM product a JOIN product_date b ON a.product_id = b.product_id  
-   JOIN product_quantity c ON a.product_id = c.product_id   
-   JOIN product_reorder bbb ON a.product_id = bbb.product_id ";
+   FROM product AS a INNER JOIN product_date b ON a.product_id = b.product_id  
+   INNER JOIN product_quantity AS c ON a.product_id = c.product_id   
+   INNER JOIN product_reorder AS bbb ON a.product_id = bbb.product_id
+   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id GROUP BY a.product_id ";
    $result = mysqli_query($connect , $sql); 
    ?>
 <nav class="navbar navbar-light bgc">
@@ -73,45 +74,33 @@
             <th>กำไร</th>
             <th>วันเดือนปีที่ผลิต</th>
             <th>วันเดือนปีที่หมดอายุ</th>
+            <th>แจ้งหมดอายุ</th>
+            <th>จุดสั่งซื้อ</th>
         </tr>
     </thead>
+    <tbody>
     <?php $i = 1;
       $profit = 0;
       while ($row = mysqli_fetch_array($result)) {
       $profit = $row['product_price_sell'] - $row['product_price_cost'];
       ?>
-    <tbody>
+
         <tr>
             <td><?php echo $i++ ?></td>
             <td><?php echo  $row['product_name'] ?></td>
             <td><?php echo $row['product_quantity'] ?> <?php echo $row['unit_name'] ?></td>
             <td><?php echo  number_format($row['product_price_cost'], 2) ?></td>
             <td><?php echo  number_format($row['product_price_sell'], 2) ?></td>
-            <td><?php echo  number_format($profit, 2) ?></td>
+            <td>
+                <?php if($profit <= 0 && $row['product_price_sell'] >  $row['product_price_cost']  ){ ?>
+                    <a class="text-danger"><?php echo "กำหนดราคา" ?></td></a>
+                    <?php } else if($row['product_price_sell'] <  $row['product_price_cost'] ){ ?>
+                        <a class="text-danger"><?php echo "" ?><?php echo $profit ; ?></td></a>
+                <?php } else{ ?>
+            <?php echo  number_format($profit, 2) ?></td>
+                <?php } ?>
             <td><?php echo  datethai($row['product_start_date']) ?></td>
             <td><?php echo  datethai($row['product_end_date']) ?></td>
-        </tr>
-    </tbody>
-
-
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>แจ้งหมดอายุ</td>
-            <td>จุดสั่งซื้อ</td>
-  
-
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
             <?php
             $case_notify = status_date_notify(($row['product_end_date']));
             switch ($case_notify) {
@@ -145,14 +134,15 @@
             $point = $row['point'];
                                     ?>
             <?php if ($productqty <= $point) { ?>
-            <td colspan=""><?php echo "ถึงจุดสั่งซื้อ" ?></td>
+            <td colspan="" class="text-danger"><?php echo "ถึงจุดสั่งซื้อ" ?></td>
             <?php } else { ?>
             <td colspan=""><?php echo "ยังไม่ถึงจุดสั่งซื้อ" ?></td>
             <?php } 
             ?>
         </tr>
-    </tbody>
+
     <?php } ?>
+    </tbody>
 </table>
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>

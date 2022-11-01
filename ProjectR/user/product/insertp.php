@@ -54,14 +54,14 @@ $conn = new mysqli('localhost', 'root', 'akom2006', 'dachai');
             <div class="form-group">
                 <img id="preview" width="150" height="150">
                 <hr>
-                <input type="file" class="form-control " name="product_img" required />
+                <input type="file" class="form-control " id="product_img" name="product_img" required  />
             </div>
         </div>
 
         <div class="col-md-5">
             <div class="mb-3">
                 <label class="form-label">ชื่อสินค้า</label>
-                <input type="text" class="form-control" name="product_name">
+                <input type="text" class="form-control" name="product_name" autocomplete="off">
             </div>
         </div>
 
