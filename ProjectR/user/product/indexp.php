@@ -26,7 +26,7 @@ JOIN product_price d ON a.product_id = d.product_id
             PRODUCT
         </a>
         <a type="button" href="?page=<?= $_GET['page'] ?>&function=insert" class="btn rounded-pill"><img
-                src="../images/add-product.png" width="80px"></a>
+                src="../images/add-product.png" width="80px"><p class="text-white">เพิ่มข้อมูลสินค้า</p></a>
     </div>
 </nav>
 <br>

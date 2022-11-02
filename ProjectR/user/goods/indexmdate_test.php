@@ -7,15 +7,20 @@ if (isset($_GET['good_RefNo']) && !empty($_GET['good_RefNo'])) {
   sum(c.product_price_cost * a.product_quantity ) * 0.07 + sum(c.product_price_cost * a.product_quantity ) as vat ,
   sum(c.product_price_cost * a.product_quantity ) * 0.07 as vatt
    ,(c.product_price_cost * a.product_quantity) as plusel 
-FROM  goods_detailproduct a JOIN product_price c ON a.product_id = c.product_id";
+FROM  goods_detailproduct a INNER JOIN product_price c ON a.product_id = c.product_id
+INNER JOIN goods aaa ON a.good_id = aaa.good_id
+ WHERE aaa.good_RefNo = '$good_RefNo' ";
   $query = mysqli_query($connect, $sql);
   $result1 = mysqli_fetch_array($query);
 }
+date_default_timezone_set('Asia/Bangkok');
+
 ?>
 
 <form class="forms-sample" enctype="multipart/form-data" method="POST" action="?page=manager_goods_test&function=insert">
 <a href=javascript:history.back(1)><img src="../images/back1.png" width="60px"></a>
     <button style="border:none;" class="mr-2"><img src="../images/yes.png" width="60px;"></button>
+    <a class="text-danger ">ถ้าไม่ใส่วันเดือนปีที่ผลิต กับ วันที่หมดอายุ ระบบจะทำการกำหนดเอาวันที่ปัจจุัน กับ นับไปอีก 3 ปี มากำหนดแทน</a>
     <table class="table table-hover table-bordered text-center" id="">
         <tr>
             <td colspan="7">
@@ -60,11 +65,11 @@ FROM  goods_detailproduct a JOIN product_price c ON a.product_id = c.product_id"
                 <input type="hidden" name="good_RefNo[]" value="<?= $rowp['good_RefNo']?>">
                 <td class="col-1"> <input type="hidden" name="product_id[]"
                         value="<?= $rowp['product_id'] ?>"><?php echo $rowp['product_id'] ?></td>
-                <td class="col-2"><a name="product_name[$product_id]"><?= $rowp['product_name'] ?></a></td>
-                <td class="col-1"><input type='datetime-local' class='form-control' name="product_start_date[]" /></td>
-                <td class="col-0"><input type='datetime-local' class='form-control' name="product_end_date[]" /></td>
-                <td class="col-1"><input type="hidden" name="product_quantity[]"
-                        value="<?= $result1['product_quantity'] ?>"><?php echo  $result1['product_quantity'] ?></td>
+                <td class="col-3"><a name="product_name[$product_id]"><?= $rowp['product_name'] ?></a></td>
+                <td class="col-1"><input type='text' class="dateInput  form-control "  name="product_start_date[]" /></td>
+                <td class="col-1"><input type='text'  class="dateInput form-control   name="product_end_date[]" /></td>
+                <td class="col-1"><input type="hidden" name="product_quantity[]" 
+                        value="<?= $rowp['product_quantity'] ?>"><?php echo  $rowp['product_quantity'] ?></td>
                 <td class="col-1"><input type="hidden" name="product_price_cost[]"
                         value="<?= $rowp['product_price_cost'] ?>"><?php echo  number_format($rowp['product_price_cost'],2) ?></td>
                 </td>
@@ -90,3 +95,125 @@ FROM  goods_detailproduct a JOIN product_price c ON a.product_id = c.product_id"
         </tr>
     </table>
 </form>
+
+
+
+
+<?php  
+$jquery_ui_v="1.8.5";  
+$theme=array(  
+    "0"=>"base",  
+    "1"=>"black-tie",  
+    "2"=>"blitzer",  
+    "3"=>"cupertino",  
+    "4"=>"dark-hive",  
+    "5"=>"dot-luv",  
+    "6"=>"eggplant",  
+    "7"=>"excite-bike",  
+    "8"=>"flick",  
+    "9"=>"hot-sneaks",  
+    "10"=>"humanity",  
+    "11"=>"le-frog",  
+    "12"=>"mint-choc",  
+    "13"=>"overcast",  
+    "14"=>"pepper-grinder",  
+    "15"=>"redmond",  
+    "16"=>"smoothness",  
+    "17"=>"south-street",  
+    "18"=>"start",  
+    "19"=>"sunny",  
+    "20"=>"swanky-purse",  
+    "21"=>"trontastic",  
+    "22"=>"ui-darkness",  
+    "23"=>"ui-lightness",  
+    "24"=>"vader" 
+);  
+$jquery_ui_theme=$theme[22];  
+?>  
+<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/<?=$jquery_ui_v?>/themes/<?=$jquery_ui_theme?>/jquery-ui.css" />  
+<style type="text/css">  
+/* ปรับขนาดตัวอักษรของข้อความใน tabs  
+สามารถปรับเปลี่ยน รายละเอียดอื่นๆ เพิ่มเติมเกี่ยวกับ tabs 
+*/ 
+.ui-tabs{  
+    font-family:tahoma;  
+    font-size:11px;  
+}  
+</style>  
+<style type="text/css">
+/* Overide css code กำหนดความกว้างของปฏิทินและอื่นๆ */
+.ui-datepicker{
+    width:220px;
+    font-family:tahoma;
+    font-size:11px;
+    text-align:center;
+}
+</style>
+</head>
+ 
+<body>
+ 
+<!--  
+<div style="margin:auto;width:95%;">
+ 
+<input name="dateInput" type="text" id="dateInput" value="" />
+ 
+</div>
+  -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    var dateBefore=null;
+    $(".dateInput").datepicker({
+        dateFormat: 'dd-mm-yy',
+        showOn: 'button',
+//      buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif',
+        buttonImageOnly: false,
+        dayNamesMin: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'], 
+        monthNamesShort: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+        changeMonth: true,
+        changeYear: true,
+        beforeShow:function(){  
+            if($(this).val()!=""){
+                var arrayDate=$(this).val().split("-");     
+                arrayDate[2]=parseInt(arrayDate[2])-543;
+                $(this).val(arrayDate[0]+"-"+arrayDate[1]+"-"+arrayDate[2]);
+            }
+            setTimeout(function(){
+                $.each($(".ui-datepicker-year option"),function(j,k){
+                    var textYear=parseInt($(".ui-datepicker-year option").eq(j).val())+543;
+                    $(".ui-datepicker-year option").eq(j).text(textYear);
+                });             
+            },50);
+        },
+        onChangeMonthYear: function(){
+            setTimeout(function(){
+                $.each($(".ui-datepicker-year option"),function(j,k){
+                    var textYear=parseInt($(".ui-datepicker-year option").eq(j).val())+543;
+                    $(".ui-datepicker-year option").eq(j).text(textYear);
+                });             
+            },50);      
+        },
+        onClose:function(){
+            if($(this).val()!="" && $(this).val()==dateBefore){         
+                var arrayDate=dateBefore.split("-");
+                arrayDate[2]=parseInt(arrayDate[2])+543;
+                $(this).val(arrayDate[0]+"-"+arrayDate[1]+"-"+arrayDate[2]);    
+            }       
+        },
+        onSelect: function(dateText, inst){ 
+            dateBefore=$(this).val();
+            var arrayDate=dateText.split("-");
+            arrayDate[2]=parseInt(arrayDate[2])+543;
+            $(this).val(arrayDate[0]+"-"+arrayDate[1]+"-"+arrayDate[2]);
+        }   
+ 
+    });
+     
+ 
+     
+     
+     
+});
+</script>

@@ -9,7 +9,7 @@ if (isset($_POST) && !empty($_POST)) {
 	$query = mysqli_query($con, $sql);
 
 	$row = mysqli_num_rows($query);
-    print_r($query);
+    // print_r($query);
     if ($row == 1) {
         $result = mysqli_fetch_assoc($query);
         $_SESSION['user_login'] = $result['username'];

@@ -65,7 +65,7 @@ $conn = new mysqli('localhost', 'root', 'akom2006', 'dachai');
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-2" style="display:none;">
             <div class="mb-3">
                 <label class="form-label">Barcode</label>
                 <input type="text" class="form-control" name="product_barcode" value="<?php echo random_char(10) ?>"

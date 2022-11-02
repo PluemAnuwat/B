@@ -56,53 +56,61 @@ foreach ($_POST['product_id'] as $key =>  $value) {
     $sql9 = "UPDATE product_quantity SET product_quantity = '$newnet'   , good_RefNo = '{$_POST['good_RefNo'][$key]}' WHERE product_id  = '{$value}'";
     $resuu = mysqli_query($connect, $sql9);
     
-    // echo '<pre>' . print_r($sql9, 1) . '</pre>';
-    // exit;
+  
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    date_default_timezone_set("Asia/Bangkok");
+    
+    $sToken = "Uv0soCK4s2VPPiO1s8DpbBYp5mHdqz9Y9p5NUpiPsRZ";
 
-
-
+    
     
 }
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-date_default_timezone_set("Asia/Bangkok");
-
-$sToken = "Uv0soCK4s2VPPiO1s8DpbBYp5mHdqz9Y9p5NUpiPsRZ";
 
 
-// require '../functionDateThai.php'; 
 
-$con = mysqli_connect("localhost", "root", "akom2006", "project");
+require 'functionDateThai.php'; 
 
+$product_name="";
+$product_quantity = "";
+$unit_name = "";
+$sql1 = "SELECT *   FROM goods INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id 
+WHERE good_RefNo = '{$_POST['good_RefNo'][$key]}' ";
 
-$sql1 = "SELECT *   FROM goods INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id WHERE good_RefNo = '{$_POST['good_RefNo'][$key]}' ";
-
-$query1 = mysqli_query($con , $sql1);
+$query1 = mysqli_query($connect , $sql1);
 
 while ($row1 = mysqli_fetch_array($query1)) { 
 
+          
+     
              $sql2 = "SELECT * 
              FROM goods INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id
              INNER JOIN product  ON goods_detailproduct.product_id = product.product_id
+             INNER JOIN unit ON product.product_unit = unit.unit_id
             WHERE goods.good_id = '".$row1['good_id']."'    " ;
-            print_r($sql2);
-                 $query2 = mysqli_query($con , $sql2);
-                 while ($result2 = mysqli_fetch_array($query2)){ 
-$sMessage1 = '
-<----- รายการสินค้าเข้าสต็อก ----->
-วันที่รับสินค้า : '.($row1['good_create']).'
-หมายเลขใบรับสินค้า :'.$row1['good_RefNo'].'
-รายการ :'.$result2['product_name'].'
-จำนวน :'.$result2['product_quantity'].'
-';
+            // print_r($sql2);
+            $i=1;
+                 $query2 = mysqli_query($connect , $sql2);
+                 while ($result2 = mysqli_fetch_array($query2)){
+
+                    $product_name =  $product_name.$result2['product_name']."\r"."จำนวน : ".$product_quantity.$result2['product_quantity']. "\r" .$unit_name.$result2['unit_name']."\n" ;  
+
+                    
+
             }
 
             
         }
 
-
+        $sMessage1 = '
+<----- รายการสินค้าเข้าสต็อก ----->
+วันที่รับสินค้า : '.datethai($date).'
+หมายเลขใบรับสินค้า :'.$row1['good_RefNo'].'
+<====== รายการ ======>   
+' .$product_name. "\n
+";
 
 $chOne = curl_init(); 
 curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify"); 
@@ -128,6 +136,7 @@ else {
 curl_close( $chOne );   
 
 
+// exit;
 
 
 

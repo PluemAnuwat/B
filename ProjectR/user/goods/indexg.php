@@ -24,13 +24,13 @@
 // WHERE goods_detailproduct.product_start_date IS NULL 
 // AND goods_detailproduct.product_end_date IS NULL 
 // AND goods.good_create IS NULL  ";
-$sql = "SELECT DISTINCT(b.po_RefNo) , 
+$sql = "SELECT DISTINCT(b.po_RefNo) , b.po_create , 
 CASE 
 WHEN
     a.good_create  IS NULL   THEN 'ยังไม่ได้จัดเตรียมสินค้า' 
  WHEN   a.good_create  IS NOT NULL   THEN 'จัดเตรียมสินค้าแล้ว'
    END AS msgstatus
-FROM goods a JOIN goods_detailproduct b ON a.good_id = b.goods_detailproid";
+FROM goods a JOIN goods_detailproduct b ON a.good_id = b.goods_detailproid ";
 $result = mysqli_query($connect , $sql);
 ?>
 
@@ -50,7 +50,7 @@ $result = mysqli_query($connect , $sql);
     <thead>
         <tr>
             <th scope="col">ลำดับ</th>
-            <th scope="col"></th>
+            <th scope="col">หมายเลขใบสั่งซื้อ</th>
             <th scope="col">วันที่ออกใบรับ</th>
             <th scope="col">รายการ</th>
             <th scope="col">จำนวน</th>
@@ -61,40 +61,47 @@ $result = mysqli_query($connect , $sql);
     <tbody>
         <?php 
         require '../functionDateThai.php';
-    $i = 1 ;
+    $no = 1 ;
     while ($row = mysqli_fetch_array($result)) {
         $row_date = $row['product_start_date'] ; 
          ?>
 
         <tr>
-            <td></td>
-            <th style="text-align:center;"><?php echo $row['po_RefNo']?></th>
+            <td><?php echo $no++; ?></td>
+            <td style="text-align:center;"><?php echo $row['po_RefNo']?></td>
+            <td><?php echo DateThai($row['po_create']); ?></td>
             <td>
-
-                <?php 
-                $no = 1;
+            <?php 
                 $sqlproduct = "SELECT  * FROM  goods_detailproduct b
                  JOIN product c ON b.product_id = c.product_id JOIN goods d ON d.good_id = b.goods_detailproid WHERE b.po_RefNo = '".$row['po_RefNo']."'";
                  $queryproduct = mysqli_query($connect , $sqlproduct); 
-                while ($rowproduct = mysqli_fetch_array($queryproduct)) { 
-        ?>
-
-        <tr>
-            <td><?php echo $no++; ?></td>
-            <td></td>
-            <td><?php echo DateThai($rowproduct['po_create']); ?></td>
-            <td>
-                <?php echo $rowproduct['product_name'];  echo '<br>'; ?>
+                 $i = 1 ;
+                while ($rowproduct = mysqli_fetch_array($queryproduct)) { ?>            
+                -   <?php echo $rowproduct['product_name'];  echo '<br>'; ?>
+            <?php  } ?>
             </td>
-            <td style="text-align:right;"><?php echo $rowproduct['product_quantity'];  echo '<br>'; ?></td>
-            <td><?php echo $rowproduct['po_buyer'];  echo '<br>'; ?></td>
-            <td><?php echo $row['msgstatus'] ; ?></td>
-        </tr>
+            <td class="text-center">
+            <?php 
+                $sqlproduct = "SELECT  * FROM  goods_detailproduct b
+                 JOIN product c ON b.product_id = c.product_id JOIN goods d ON d.good_id = b.goods_detailproid WHERE b.po_RefNo = '".$row['po_RefNo']."'";
+                 $queryproduct = mysqli_query($connect , $sqlproduct); 
+                while ($rowproduct = mysqli_fetch_array($queryproduct)) { ?>            
+                <?php echo $rowproduct['product_quantity'];  echo '<br>'; ?>
+            <?php  } ?>
+            </td>
+            <td>
+            <?php 
+                $sqlproduct = "SELECT  * FROM  goods_detailproduct b
+                 JOIN product c ON b.product_id = c.product_id JOIN goods d ON d.good_id = b.goods_detailproid WHERE b.po_RefNo = '".$row['po_RefNo']."'";
+                 $queryproduct = mysqli_query($connect , $sqlproduct); 
+                while ($rowproduct = mysqli_fetch_array($queryproduct)) { ?>            
+             <?php echo $rowproduct['po_buyer'];  echo '<br>'; ?>
+            <?php  } ?>
+            </td>
+            <td>   <?php echo $row['msgstatus'] ; ?>     </td>           
 
-        <?php  } ?>
+   
 
-    
-        </td>
       
     </tr>
 

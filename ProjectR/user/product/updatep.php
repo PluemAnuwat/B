@@ -6,6 +6,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id'])) {
      $sql = "SELECT * FROM product as a  INNER JOIN product_price b ON  a.product_id = b.product_id INNER JOIN product_reorder c ON a.product_id = c.product_id WHERE a.product_id = '$product_id'";
      $query = mysqli_query($con, $sql);
      $result = mysqli_fetch_assoc($query);
+  
 }
 if (isset($_POST) && !empty($_POST)) {
      $product_name = $_POST['product_name'];
@@ -48,12 +49,15 @@ if (isset($_POST) && !empty($_POST)) {
      $sql = "UPDATE product SET product_name='$product_name',product_common='$product_common' , product_img= '$filename' , 
     product_type = '$product_type'  , product_category = '$product_category' ,  product_symp = '$product_symp'  , product_unit = '$product_unit' ,
     product_barcode = '$product_barcode'  WHERE product_id = '$product_id'";
+    $query = mysqli_query($con , $sql);
+    // print_r($sql);
+    // exit;
+     $sql1 = "UPDATE product_price SET product_price_cost = '$product_price_cost'  WHERE product_id = '$product_id' " ;
+     $query1 = mysqli_query($con , $sql1);
 
-     $sql = "UPDATE product_price SET product_price_cost = '$product_price_cost'  WHERE product_id = '$product_id' " ;
-
-     $sql = "UPDATE product_reorder SET point = '$point'  WHERE product_id = '$product_id' " ;
-
-    if(mysqli_query($con,$sql)){
+     $sql2 = "UPDATE product_reorder SET point = '$point'  WHERE product_id = '$product_id' " ;
+    
+    if(mysqli_query($con,$sql2)){
      $alert = '<script type="text/javascript">';
      $alert .= 'alert("แก้ไขเรียบร้อย !!");';
      $alert .= 'window.location.href = "?page=product";';
@@ -134,7 +138,7 @@ $conn = new mysqli('localhost', 'root', 'akom2006', 'dachai');
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-2" style="display:none;">
             <div class="mb-3">
                 <label class="form-label">Barcode</label>
                 <input type="text" class="form-control" name="product_barcode"

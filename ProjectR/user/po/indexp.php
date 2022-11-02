@@ -21,12 +21,12 @@ require '../functionDateThai.php';
 
 <nav class="navbar navbar-light bgc">
     <div class="container-fluid">
-        <a href=javascript:history.back(1)><img src="../images/back1.png" width="80px"></a>
+        <a href=javascript:history.back(1)><img src="../images/back1.png" width="80px"><p class="text-white">ย้อนกลับ</p></a>
         <a class="navbar-brand text-white" href="#">
             PURCHASE ORDER
         </a>
         <a type="button" href="?page=<?= $_GET['page'] ?>&function=insert" class="btn rounded-pill"><img
-                src="../images/insert.png" width="80px"></a>
+                src="../images/insert.png" width="80px"><p class="text-white">เพิ่มใบสั่งซื้อ</p></a>
     </div>
 </nav>
 <br>
@@ -34,7 +34,7 @@ require '../functionDateThai.php';
     <thead>
         <tr>
             <th scope="col">เลขที่เอกสาร</th>
-            <th scope="col">วันที่ออกเอกสาร</th>
+            <th scope="col-2">วันที่ออกเอกสารใบสั่งซื้อ</th>
             <th scope="col">ชื่อผู้สั่งซื้อ</th>
             <th scope="col">สถานะ</th>
             <th scope="col"></th>
@@ -51,10 +51,10 @@ require '../functionDateThai.php';
             <td class="col-2"><?php echo  $row['po_status'] ?></td>
             <td scope="row">
             <a href="?page=<?= $_GET['page'] ?>&function=detail&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/detail.png" width="20px"></a>  
-            <!-- <a href="?page=<?= $_GET['page'] ?>&function=update&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/yes.png" width="30px"></a>     -->
             <?php if($row['po_status'] != 'สั่งแล้ว' &&  $row['po_status'] != 'รับสินค้าแล้ว' &&  $row['po_status'] != 'ยกเลิก') { ?>
             <a href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/delete.png" width="20px"></a>  
             <?php } ?>
+            </td>
         </tr>
         <?php } ?>
     </tbody>

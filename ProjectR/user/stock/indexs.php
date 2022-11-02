@@ -75,6 +75,7 @@
             <th>วันเดือนปีที่ผลิต</th>
             <th>วันเดือนปีที่หมดอายุ</th>
             <th>แจ้งหมดอายุ</th>
+            <th>จุดสั่งซื้อที่กำหนด</th>
             <th>จุดสั่งซื้อ</th>
         </tr>
     </thead>
@@ -133,6 +134,7 @@
             $productqty = $row['product_quantity'];
             $point = $row['point'];
                                     ?>
+            <td><?php echo $row['point'] ;?></td>
             <?php if ($productqty <= $point) { ?>
             <td colspan="" class="text-danger"><?php echo "ถึงจุดสั่งซื้อ" ?></td>
             <?php } else { ?>

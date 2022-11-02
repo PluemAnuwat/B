@@ -43,12 +43,14 @@ GROUP BY  a.good_RefNo DESC";
             <th scope="col">วันที่ออกใบรับสินค้า</th>
             <th scope="col">หมายเลขใบรับ</th>
             <th scope="col">หมายเลขใบสั่งซื้อ</th>
-            <th scope="col">จำนวนรายการ</th>
+            <th scope="col">รายการสินค้า</th>
+            <th scope="col">จำนวน</th>
+            <!-- <th scope="col">จำนวนรายการ</th> -->
             <th scope="col">ผู้สั่งซื้อ</th>
             <th scope="col">สถานะของใบรับสินค้า</th>
-            <th scope="col">โน๊ต</th>
-            <th scope="col">ส่ง</th>
-            <th scope="col"></th>
+            <!-- <th scope="col">โน๊ต</th> -->
+            <th scope="col">จัดการ</th>
+            <!-- <th scope="col"></th> -->
         </tr>
     </thead>
     <tbody>
@@ -65,18 +67,40 @@ GROUP BY  a.good_RefNo DESC";
             <?php } ?>
             <td scope="row"><?php echo $row['good_RefNo']?></td>
             <td scope="row"><?php echo $row['po_RefNo']?></td>
-            <td scope="row"><?php echo $row['count']?></td>
+            <td scope="row">
+            <?php $sql1 = "SELECT * FROM goods 
+                            INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id
+                            INNER JOIN product ON goods_detailproduct.product_id = product.product_id
+                            WHERE goods.good_RefNo = '".$row['good_RefNo']."'";
+                  $query1 = mysqli_query($connect , $sql1 );
+                  $ii = 1 ;
+                  while($result1 = mysqli_fetch_array($query1)){ ?>
+            <?php echo $ii++ ; echo "." ; echo  $result1['product_name'] ; echo '<br>' ?>
+                  <?php } ?>
+                  </td>
+            <td scope="row">
+            <?php $sql1 = "SELECT * FROM goods 
+                            INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id
+                            INNER JOIN product ON goods_detailproduct.product_id = product.product_id
+                            WHERE goods.good_RefNo = '".$row['good_RefNo']."'";
+                  $query1 = mysqli_query($connect , $sql1 );
+                  $ii = 1 ;
+                  while($result1 = mysqli_fetch_array($query1)){ ?>
+            <?php echo  $result1['product_quantity'] ; echo '<br>' ?>
+                  <?php } ?>
+            </td>
+            <!-- <td scope="row"><?php echo $row['count']?></td>  -->
             <td scope="row"><?php echo $row['po_buyer']?></td>
             <?php if ($row['good_status'] == 0) { ?>
             <td class="col-2"><a class="text-danger"><img src="../images/waithands.png" width="30px;"><?php echo  $row['status'] ?></a></td>
-            <td scope="row"><img src="../images/cencle.png" width="20px"> ยกเลิกได้ </td>
+            <!-- <td scope="row"> ยกเลิกได้ </td> -->
           <td><a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/prepare.png" width="30px"></a>
-          <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/delete.png" width="30px"></a></td>
+          <!-- <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/delete.png" width="30px"></a></td> -->
             <?php } else {  ?>
             <td class="col-2"><a class="text-success"><img src="../images/handsok.png" width="30px;"><?php echo  $row['status'] ?></a></td>
-            <td scope="row"><img src="../images/not-found.png" width="20px"> ยกเลิกไม่ได้ </td>
+            <!-- <td scope="row">ยกเลิกไม่ได้ </td> -->
             <td></td>
-            <td></td>
+            <!-- <td></td> -->
             <?php } ?>
         </tr>
         <?php } ?>
@@ -112,3 +136,5 @@ $(document).ready(function() {
         .addClass('table table-bordered');
 });
 </script>
+
+

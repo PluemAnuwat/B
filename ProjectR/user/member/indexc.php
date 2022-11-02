@@ -19,7 +19,7 @@
             MEMBER
         </a>
         <a type="button" name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
-                width="80px"></a>
+                width="80px"><p class="text-white">เพิ่มสมาชิก</p></a>
     </div>
 </nav>
 

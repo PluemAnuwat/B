@@ -63,23 +63,29 @@ function random_char($len)
 
   $sToken = "Uv0soCK4s2VPPiO1s8DpbBYp5mHdqz9Y9p5NUpiPsRZ";
 
+  $product_name = "";
+  $product_quantity="";
+  $unit_name = "";
+  $product_vat = "";
 
-$sql1 = "SELECT sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  , sales.sales_date , sales.sales_RefNo
+$sql1 = "SELECT d.unit_name ,  sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  , sales.sales_date , sales.sales_RefNo
 FROM sales INNER JOIN product ON sales.product_id = product.product_id
 JOIN product_price AS c ON sales.product_id = c.product_id 
+INNER JOIN unit d ON product.product_unit = d.unit_id
  WHERE sales.sales_RefNo = '".$das."' " ;
 $query1 = mysqli_query($connect , $sql1) ;
 while ($row1 = mysqli_fetch_array($query1)) { 
- 
+        
+     $product_name =  $product_name.$row1['product_name']."\r"."จำนวน : ".$product_quantity.$row1['product_quantity']. "\r" .$unit_name.$row1['unit_name']."\n" ;      
+     $product_vat = $product_vat.number_format(($row1['product_price_sell'] * 0.07) +  ($row1['product_price_sell'] *  $row1['product_quantity']  )  ,2);
  $sMessage = '
-<----- ขายสินค้า ----->
+<===== ขายสินค้า =====>
 วันที่ขาย : '.datethai($row1['sales_date']).'
 รหัสการขาย :'.$row1['sales_RefNo'].'
-รายการสินค้า :'.$row1['product_name'].'
-จำนวน :'.$row1['product_quantity'].'
-ราคาต่อหน่วย :'.number_format($row1['product_price_sell'],2).' บาท
-ราคารวมภาษี :'.number_format(($row1['product_price_sell'] * 0.07) +  ($row1['product_price_sell'] *  $row1['product_quantity']  )  ,2). ' บาท
-                     ';
+<===== รายการสินค้าที่ขาย =====>
+'.$product_name.'
+ราคารวมภาษี :'.$product_vat.'                     
+';
              }
 
           
@@ -107,9 +113,6 @@ while ($row1 = mysqli_fetch_array($query1)) {
      
   } 
   curl_close( $chOne );   
-
-
-
 
 mysqli_close();
 

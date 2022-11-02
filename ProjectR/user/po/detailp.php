@@ -29,8 +29,10 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
 ?>
 
 
-<a href=javascript:history.back(1)><img src="../images/back1.png" width="80px"></a>
 <!-- <a  class="btn btn-primary" href="?page=<?= $_GET['page'] ?>&function=reportp&po_RefNo=<?php echo  $result1['po_RefNo'] ?>">PDF</a> -->
+<a href=javascript:history.back(1)><img src="../images/back1.png" width="80px"></a>
+<button type="button" style="border:none;"  onClick="window.print()"><img src="../images/printer.png" width="80px;"></button>
+<hr>
 <div class="card">
     <div class="card-body">
 

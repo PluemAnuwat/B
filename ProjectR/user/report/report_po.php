@@ -32,6 +32,7 @@ function status_date_notify($endDate)
 	}
 }
 ?>
+
 <?php
 $connect = mysqli_connect("localhost","root","akom2006","project");
 
@@ -171,8 +172,8 @@ if ($report == "") {
                 <th scope="col-1">ลำดับ</th>
                 <th scope="col">เลขที่เอกสาร</th>
                 <th scope="col">วันที่ออกเอกสาร</th>
-                <th scope="col">รหัสผู้ขาย</th>
                 <th scope="col">ชื่อผู้ขาย</th>
+                <th scope="col">รายการสินค้า</th>
                 <th scope="col">จำนวนสินค้า</th>
                 <th scope="col">จำนวนเงินทั้งสิ้น(ภาษี)</th>
                 <th scope="col">สถานะ</th>
@@ -257,11 +258,10 @@ if ($report == "") {
 														
 														
 														?>
-                        <tr bgcolor="#e5e5e5" align="center">
+                        <tr bgcolor="#e5e5e5" align="">
                             <td class="col-2"><?php echo $i++ ?></td>
                             <td class="col-2"><?php echo  $rep['po_RefNo'] ?></td>
                             <td class="col-2"><?php echo datethai($rep['po_create']) ?></td>
-                            <td class="col-2"><?php echo  $rep['suppiles_id'] ?></td>
                             <td class="col-2">
                                 <?php
 																if($rep['suppiles_name'] == '-'){
@@ -269,9 +269,29 @@ if ($report == "") {
 																}else{
 																echo  $rep['suppiles_name'] ;
 																}
-																?></td>
-                            <td class="col-2"><?php echo  $rep['count'] ?></td>
-                            <td class="col-2"><?php echo  number_format($rep['sum'], 2) ?> บาท</td>
+																?>
+                                </td>
+                            <td class="col-2">
+                                <?php $sss = "SELECT * FROM po aa INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id  
+                                INNER JOIN product AS b ON a.product_id = b.product_id 
+                                WHERE aa.po_RefNo = '".$rep['po_RefNo']."'";
+                                        $qqq = mysqli_query($connect , $sss);
+                                        $i = 1 ;
+                                        while($ccc = mysqli_fetch_array($qqq)){ ?>
+                            <?php echo $i++ ; echo "." ;  echo  $ccc['product_name'] ; echo '<br>' ; ?>
+                            <?php } ?>
+                            </td>
+                            <td class="col-2">
+                                <?php $sss = "SELECT * FROM po aa INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id
+                                INNER JOIN product AS b ON a.product_id = b.product_id 
+                                INNER JOIN unit u ON b.product_unit = u.unit_id
+                                  WHERE aa.po_RefNo = '".$rep['po_RefNo']."'";
+                                        $qqq = mysqli_query($connect , $sss);
+                                        while($ccc = mysqli_fetch_array($qqq)){ ?>
+                            <?php echo  $ccc['product_quantity'] ; echo "   " ; echo $ccc['unit_name'] ;   echo '<br>' ; ?>
+                            <?php } ?>
+                            </td>
+                            <td class="col-2"><?php echo  number_format($rep['sum'], 2) ?></td>
                             <?php if ($rep['po_status'] == "ยกเลิกการสั่งซื้อ") { ?>
                             <td class="col-2"><a class="text-danger"><?php echo  $rep['po_status'] ?></a></td>
                             <?php } elseif ($rep['po_status'] == "ได้รับสินค้าแล้ว") { ?>
@@ -279,13 +299,8 @@ if ($report == "") {
                             <?php } else { ?>
                             <td class="col-2"><a class="text-primary"><?php echo  $rep['po_status'] ?></a></td>
                             <?php } ?>
-                            <td class="col-2"><?php echo  $rep['po_saler'] ?></td>
+                            <td class="col-2"><?php echo  $rep['po_buyer'] ?></td>
                             <?php } ?>
-
-
-
-
-
                             <?php  } elseif ($report == 2) {   ?>
                             <?php if ($ds && $de) { ?>
                             <center> เริ่มจากวันที่ <?php echo $ds; ?> ถึงวันที่ <?php echo $de; ?> </center>
@@ -297,24 +312,28 @@ if ($report == "") {
                                                             <tr bgcolor=#e5e5e5>
 															<th scope="row"><?php echo $i++ ?></th>
 															<td class="col-2"><?php echo  datethai($rep['sales_date']) ?></td>
-															<td class="col-2"><?php echo  $rep['sales_RefNo'] ?></td>
-                                                        </tr>
-														
-                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+															<td class="col-2"><?php echo  $rep['sales_RefNo'] ?></td>               
+                            <td>
                             <?php $sql = "SELECT sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  FROM sales INNER JOIN product ON sales.product_id = product.product_id
 																 JOIN product_price AS c ON sales.product_id = c.product_id 
 																 WHERE sales_RefNo = '".$rep['sales_RefNo']."'    " ;
 																	  $query = mysqli_query($connect , $sql);
 																	  while ($result = mysqli_fetch_array($query)){ ?>
-                            <td><?php echo  $result['product_name'] ?></td>
-                            <td><?php echo  $result['product_price_sell'] ?></td>
+                                    <?php echo  $result['product_name'] ?>
+                                    <?php } ?>
+                            </td>
+                            <?php $sql = "SELECT sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  FROM sales INNER JOIN product ON sales.product_id = product.product_id
+																 JOIN product_price AS c ON sales.product_id = c.product_id 
+																 WHERE sales_RefNo = '".$rep['sales_RefNo']."'    " ;
+																	  $query = mysqli_query($connect , $sql);
+																	  while ($result = mysqli_fetch_array($query)){ ?>
+                                    <?php echo  $result['product_price_sell'] ?>
+                                    <?php } ?>
+                            </td>
                             <td><?php echo  $result['product_quantity'] ?></td>
                             <td><?php echo  $result['product_price_sell'] *  $result['product_quantity'] ?></td>
                             <td class="col-2"><?php echo  $rep['user_login'] ?></td> 
-                            <?php } ?>
+                           
                         </tr>
                     
                         <?php } ?>
