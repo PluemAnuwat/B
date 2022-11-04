@@ -16,11 +16,12 @@ $connect = mysqli_connect("localhost","root","akom2006","project");
 if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
     $po_RefNo = $_GET['po_RefNo'];
     $good_RefNo = getName($n);
-    $sql = "SELECT * ,  sum(cc.product_price_cost * b.product_quantity ) as qty ,
-    sum(cc.product_price_cost )  as sum ,
-    sum(cc.product_price_cost * b.product_quantity ) * 0.07 + sum(cc.product_price_cost * b.product_quantity ) as vat
+    $sql = "SELECT * 
+    -- ,  sum(cc.product_price_cost * b.product_quantity ) as qty ,
+    -- sum(cc.product_price_cost )  as sum ,
+    -- sum(cc.product_price_cost * b.product_quantity ) * 0.07 + sum(cc.product_price_cost * b.product_quantity ) as vat
     FROM po a JOIN po_detailproduct b ON a.po_id = b.po_id 
-    INNER JOIN product_price cc ON b.product_id = cc.product_id 
+    -- INNER JOIN product_price cc ON b.product_id = cc.product_id 
     WHERE a.po_RefNo = '$po_RefNo' AND a.po_status = 'รอยืนยัน' ";
 
  
@@ -120,9 +121,9 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
 
                     $sMessage1 = "
 <----- สั่งซื้อสินค้า ----->
-วันที่สั่งซื้อ : ".($row1['po_create'])."
+วันที่สั่งซื้อ : ".datethai(date('Y-m-d H:i:s'))."
 หมายเลขใบสั่งซื้อ : ".$po_RefNo."
-ผู้สั่งซื้อ :". $row1['po_buyer']."      
+ผู้สั่งซื้อ :". $po_buyer."      
 <====== รายการ ======>               
 " .$product_name. "
 ";

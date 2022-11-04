@@ -75,6 +75,7 @@
             <th>วันเดือนปีที่ผลิต</th>
             <th>วันเดือนปีที่หมดอายุ</th>
             <th>แจ้งหมดอายุ</th>
+            <th>จุดสั่งซื้อที่กำหนด</th>
             <th>จุดสั่งซื้อ</th>
         </tr>
     </thead>
@@ -92,8 +93,10 @@
             <td><?php echo  number_format($row['product_price_cost'], 2) ?></td>
             <td><?php echo  number_format($row['product_price_sell'], 2) ?></td>
             <td>
-                <?php if($profit <= 0 ){ ?>
+                <?php if($profit <= 0 && $row['product_price_sell'] >  $row['product_price_cost']  ){ ?>
                     <a class="text-danger"><?php echo "กำหนดราคา" ?></td></a>
+                    <?php } else if($row['product_price_sell'] <  $row['product_price_cost'] ){ ?>
+                        <a class="text-danger"><?php echo "" ?><?php echo $profit ; ?></td></a>
                 <?php } else{ ?>
             <?php echo  number_format($profit, 2) ?></td>
                 <?php } ?>
@@ -131,8 +134,9 @@
             $productqty = $row['product_quantity'];
             $point = $row['point'];
                                     ?>
+            <td><?php echo $row['point'] ;?></td>
             <?php if ($productqty <= $point) { ?>
-            <td colspan=""><?php echo "ถึงจุดสั่งซื้อ" ?></td>
+            <td colspan="" class="text-danger"><?php echo "ถึงจุดสั่งซื้อ" ?></td>
             <?php } else { ?>
             <td colspan=""><?php echo "ยังไม่ถึงจุดสั่งซื้อ" ?></td>
             <?php } 

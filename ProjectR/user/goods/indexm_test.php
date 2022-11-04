@@ -19,9 +19,10 @@ WHEN  a.good_status = 1 THEN 'ส่งสินค้าไปแล้ว'
 END AS status ,
 count(a.good_RefNo) AS count 
 FROM goods a 
-INNER JOIN goods_detailproduct b ON a.good_id = b.goods_detailproid
+INNER JOIN goods_detailproduct b ON a.good_id = b.good_id
 -- WHERE a.good_status = 0   AND b.product_start_date <> ''
 GROUP BY  a.good_RefNo DESC";
+// print_r($sql);
       $result = mysqli_query($connect , $sql);
 ?>
 

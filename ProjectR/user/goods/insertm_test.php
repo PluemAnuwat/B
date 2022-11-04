@@ -6,8 +6,9 @@
 // echo '<pre>$_POST : ' . print_r($_POST, 1) . '</pre>';
 
 $date = date('Y-m-d H:i:s');
-
-
+require 'functionthaitoeng.php'; 
+// echo '<pre>'.print_r($_POST,2).'</pre>';
+// exit;
 
 foreach ($_POST['product_id'] as $key =>  $value) {
     // $product_start_date = date('Y-m-d H:i:s',strtotime($_POST['product_start_date'][$key]));
@@ -16,18 +17,23 @@ foreach ($_POST['product_id'] as $key =>  $value) {
       // print_r($product_start_date);
     // print_r($product_end_date);
 
-    $date = date('Y-m-d H:i:s');
+    $date = date('Y-m-d');
     if ($product_start_date == '') {
-        $product_start_date = date('Y-m-d H:i:s',strtotime($date));
-        $product_end_date = date('Y-m-d H:i:s', strtotime(@$now . "+3 years"));
+        $product_start_date = date('Y-m-d',strtotime($date));
+        $product_end_date = date('Y-m-d', strtotime(@$now . "+3 years"));
     } else if($product_start_date != '' & $product_end_date != '') {
-        $product_start_date = date('Y-m-d H:i:s' , strtotime($_POST['product_start_date'][$key]));
-        $product_end_date = date('Y-m-d H:i:s' , strtotime($_POST['product_end_date'][$key]));
+        $product_start_date = date('Y-m-d' , strtotime($_POST['product_start_date'][$key]));
+        $product_end_date = date('Y-m-d' , strtotime($_POST['product_end_date'][$key]));
     }else if($product_start_date != '' & $product_end_date == ''){
-        $product_start_date = date('Y-m-d H:i:s' , strtotime($_POST['product_start_date'][$key]));
-        $product_end_date = date('Y-m-d H:i:s', strtotime(@$now . "+3 years"));
+        $product_start_date = date('Y-m-d' , strtotime($_POST['product_start_date'][$key]));
+        $product_end_date = date('Y-m-d', strtotime(@$now . "+3 years"));
     }
-    // print_r(date('Y-m-d H:i:s' , strtotime($_POST['product_start_date'][$key])));
+
+    print_r($product_start_date);
+    print_r($product_end_date);
+    // print_r(thaistart1($product_end_date));
+    exit;
+
 
     $sql1 = "INSERT INTO product_date (product_start_date , product_end_date , product_create_date , product_id , good_RefNo)  
                 values('$product_start_date' ,'$product_end_date' , '$date' , '{$value}','{$_POST['good_RefNo'][$key]}')";
@@ -107,7 +113,7 @@ while ($row1 = mysqli_fetch_array($query1)) {
         $sMessage1 = '
 <----- รายการสินค้าเข้าสต็อก ----->
 วันที่รับสินค้า : '.datethai($date).'
-หมายเลขใบรับสินค้า :'.$row1['good_RefNo'].'
+หมายเลขใบรับสินค้า :'.$_POST['good_RefNo'][$key].'
 <====== รายการ ======>   
 ' .$product_name. "\n
 ";

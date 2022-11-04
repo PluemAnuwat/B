@@ -10,8 +10,8 @@
 		$strSeconds = date("s", strtotime($strDate));
 		$strMonthCut = Array("","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม");
 		$strMonthThai = $strMonthCut[$strMonth];
-		return "$strDay $strMonthThai $strYear เวลา $strHour:$strMinute";
-        // return "$strDay $strMonthThai $strYear ";
+		// return "$strDay $strMonthThai $strYear เวลา $strHour:$strMinute";
+        return "$strDay $strMonthThai $strYear ";
 		// $strHour:$strMinute:$strSeconds
 	}
 

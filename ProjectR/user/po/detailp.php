@@ -1,5 +1,6 @@
 <?php
 require '../functionDateThai.php'; 
+require 'convert.php'; 
 $connect = mysqli_connect("localhost", "root", "akom2006", "project"); 
 if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
      $po_RefNo = $_GET['po_RefNo'];
@@ -37,9 +38,7 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
     <div class="card-body">
 
         <div>ร้านขายยาดาชัย์</div>
-        <div>เลขที่  286/3</div>
-        <div>เขต มีนบุรี</div>
-        <div>เเขวง จังหวัด กรุงเทพมหานคร</div>
+        <div>เลขที่  286/3 เขต มีนบุรี เเขวง จังหวัด กรุงเทพมหานคร</div>
 
         <br>
 
@@ -52,7 +51,7 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
 
 
 
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-bordered " border="3">
             <thead>
                 <tr>
                     <th scope="col">ลำดับ</th>
@@ -89,7 +88,19 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
                     <td style="text-align: right;">ราคารวมภาษี</td>
                     <td style="text-align: right;"><?php echo number_format($result1['vat'], 2) ?> บาท</td>
                 </tr>
+                <tr>
+                    <td colspan="3"><?php echo convert(number_format($result1['vat'], 2)) ?> </td>
+                    <td ></td>
+                    <td ></td>
+                </tr>
             </tbody>
+     
         </table>
+       <center>
+       <a>ผู้สั่งซื้อ____________________________________________</a>
+       </center>
+       
+       
+    
     </div>
 </div>

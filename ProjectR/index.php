@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <link src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <style>
     body {

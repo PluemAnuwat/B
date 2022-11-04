@@ -245,5 +245,5 @@
 </html>
 <?php include 'script.php' ?>
 <?php else : ?>
-<?php include('index.php') ?>
+<!-- <?php include('index.php') ?> -->
 <?php endif; ?>

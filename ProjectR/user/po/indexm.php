@@ -13,7 +13,10 @@
 <?php $connect = mysqli_connect("localhost", "root", "akom2006", "project");
 require '../functionDateThai.php';  ?>
 
-<?php $sql ="SELECT * ,a.po_saler,c.suppiles_id,c.suppiles_name AS suppiles_name FROM po a JOIN po_detailproduct b ON a.po_id = b.po_id JOIN suppiles c ON a.po_saler = c.suppiles_id  WHERE a.po_status = 'รอยืนยัน'  group by a.po_id ORDER BY po_create DESC  ";
+<?php $sql ="SELECT * ,a.po_saler,c.suppiles_id,c.suppiles_name AS suppiles_name FROM po a 
+INNER JOIN po_detailproduct b ON a.po_id = b.po_id 
+INNER JOIN suppiles c ON a.po_saler = c.suppiles_id 
+ WHERE a.po_status = 'รอยืนยัน'  group by a.po_id ORDER BY po_create DESC  ";
       $result = mysqli_query($connect , $sql);
 ?>
 
@@ -33,7 +36,10 @@ require '../functionDateThai.php';  ?>
         <tr>
             <th scope="col">วันที่ออกใบสั่งซื้อ</th>
             <th scope="col">หมายเลขใบสั่งซื้อ</th>
+            <th scope="col">รายการสินค้า</th>
+            <th scope="col">จำนวน</th>
             <th scope="col">ซัพพลายเซน</th>
+            <th scope="col">ผู้สั่งซื้อ</th>
             <th scope="col">ยืนยันการสั่งซื้อ</th>
             <th scope="col">ยกเลิกใบสั่งซื้อ</th>
         </tr>
@@ -46,18 +52,32 @@ require '../functionDateThai.php';  ?>
         <tr>
             <td scope="row"><?php echo datethai($row['po_create'])?></td>
             <td scope="row"><?php echo $row['po_RefNo']?></td>
-            <!-- <td scope="row">
-                <?php 
-                 $sqlproduct = "SELECT  * FROM  po_detailproduct b
-                 JOIN product c ON b.product_id = c.product_id WHERE b.po_id = '".$row['po_id']."'";
-                 $queryproduct = mysqli_query($connect , $sqlproduct); 
-                while ($rowproduct = mysqli_fetch_array($queryproduct)) { ?>
-                <?php echo $rowproduct['product_name']; 
-                      echo '<br>'; ?>
-                <?php  } ?>
-            </td>   -->
+            <td class="col-4">
+                <?php $sql1 = "SELECT * FROM po AS a 
+                INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
+                INNER JOIN product AS c ON b.product_id = c.product_id
+                WHERE a.po_RefNo = '".$row['po_RefNo']."'";
+                $query1 = mysqli_query($connect , $sql1);
+                $iii = 1 ;
+                while($row1 = mysqli_fetch_array($query1)){
+                    echo $iii++ ; echo "." ; echo $row1['product_name'] ; echo '</br>';
+                 } ?>
+            </td>
+            <td class="">
+                <?php $sql1 = "SELECT * FROM po AS a 
+                INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
+                INNER JOIN product AS c ON b.product_id = c.product_id
+                INNER JOIN unit AS d ON c.product_unit = d.unit_id
+                WHERE a.po_RefNo = '".$row['po_RefNo']."'";
+                $query1 = mysqli_query($connect , $sql1);
+                $iii = 1 ;
+                while($row1 = mysqli_fetch_array($query1)){
+                   echo $row1['product_quantity'] ; echo "   " ; echo $row1['unit_name'] ;  echo '</br>';
+                 } ?>
+            </td>
             <!-- <td scope="row"></td> -->
             <td scope="row"><?php echo $row['suppiles_name']?></td>
+            <td scope="row"><?php echo $row['po_buyer']?></td>
             <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=good&po_RefNo=<?php echo $row['po_RefNo'] ?>" onclick="return confirm('ต้องการสั่งซื้อ  : <?= $row['po_RefNo'] ?> หรือไม่ ??')"><img src="../images/yes.png" width="25px"></a></td>
             <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?php echo $row['po_RefNo'] ?>" onclick="return confirm('ต้องการยกเลิก  : <?= $row['po_RefNo'] ?> หรือไม่ ??')" ><img src="../images/cencle.png" width="25px"></a></td>
         </tr>

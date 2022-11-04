@@ -33,8 +33,10 @@ require '../functionDateThai.php';
 <table class="table table-hover" id="example">
     <thead>
         <tr>
-            <th scope="col">เลขที่เอกสาร</th>
+            <th scope="col">หมายเลขใบสั่งซื้อ</th>
             <th scope="col-2">วันที่ออกเอกสารใบสั่งซื้อ</th>
+            <th scope="col">รายการสินค้า</th>
+            <th scope="col">จำนวน</th>
             <th scope="col">ชื่อผู้สั่งซื้อ</th>
             <th scope="col">สถานะ</th>
             <th scope="col"></th>
@@ -47,8 +49,39 @@ require '../functionDateThai.php';
         <tr>
             <td class="col-2"><?php echo  $row['po_RefNo'] ?></td>
             <td class="col-2"><?php echo  datethai($row['po_create']) ?></td>
-            <td class="col-2"><?php echo  $row['po_buyer'] ?></td>
-            <td class="col-2"><?php echo  $row['po_status'] ?></td>
+            <td class="col-4">
+                <?php $sql1 = "SELECT * FROM po AS a 
+                INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
+                INNER JOIN product AS c ON b.product_id = c.product_id
+                WHERE a.po_RefNo = '".$row['po_RefNo']."'";
+                $query1 = mysqli_query($connect , $sql1);
+                $iii = 1 ;
+                while($row1 = mysqli_fetch_array($query1)){
+                    echo $iii++ ; echo "." ; echo $row1['product_name'] ; echo '</br>';
+                 } ?>
+            </td>
+            <td class="">
+                <?php $sql1 = "SELECT * FROM po AS a 
+                INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
+                INNER JOIN product AS c ON b.product_id = c.product_id
+                INNER JOIN unit AS d ON c.product_unit = d.unit_id
+                WHERE a.po_RefNo = '".$row['po_RefNo']."'";
+                $query1 = mysqli_query($connect , $sql1);
+                $iii = 1 ;
+                while($row1 = mysqli_fetch_array($query1)){
+                   echo $row1['product_quantity'] ; echo "   " ; echo $row1['unit_name'] ;  echo '</br>';
+                 } ?>
+            </td>
+            <td class="col-1"><?php echo  $row['po_buyer'] ?></td>
+            <?php if($row['po_status'] == 'สั่งแล้ว'){ ?>
+                <td class="text-success"> <?php  echo  $row['po_status'] ; ?></td>
+               <?php  }else if($row['po_status'] == 'รับสินค้าแล้ว'){ ?>
+                <td class="text-primary"> <?php  echo  $row['po_status'] ; ?></td>
+                <?php }else if($row['po_status'] == 'ยกเลิก'){ ?>
+                    <td class="text-danger"> <?php  echo  $row['po_status'] ; ?></td>
+                    <?php }else{ ?>
+                        <td class="text-info"> <?php  echo  $row['po_status'] ; ?></td>
+                        <?php }?>
             <td scope="row">
             <a href="?page=<?= $_GET['page'] ?>&function=detail&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/detail.png" width="20px"></a>  
             <?php if($row['po_status'] != 'สั่งแล้ว' &&  $row['po_status'] != 'รับสินค้าแล้ว' &&  $row['po_status'] != 'ยกเลิก') { ?>

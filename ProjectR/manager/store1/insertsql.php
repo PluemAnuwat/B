@@ -31,11 +31,11 @@ function random_char($len)
 	  if($_SESSION["strProductID1"][$i] != "")
 	  {
 
-          
+                    $das = random_char(10);
 			$strSQL = "
 				INSERT INTO sales (sales_RefNo , sales_date,sales_get,product_quantity,customer_id,product_id,sales_change,product_total,user_login)
 				VALUES
-				('".random_char(10)."' , '".date("Y-m-d H:i:s")."','".$_POST['sales_get']."','".$_SESSION["strQty1"][$i]."','".$_POST['customer_id']."','".$_SESSION["strProductID1"][$i]."','','".$VatTotal."','".$_SESSION['user_login']."') 
+				('".$das."' , '".date("Y-m-d H:i:s")."','".$_POST['sales_get']."','".$_SESSION["strQty1"][$i]."','".$_POST['customer_id']."','".$_SESSION["strProductID1"][$i]."','','".$VatTotal."','".$_SESSION['user_login']."') 
 			";
 				$resultSQL = mysqli_query($connect , $strSQL);
 
@@ -51,10 +51,71 @@ function random_char($len)
                     UPDATE product_quantity SET product_quantity = '$newqty' WHERE product_id = '".$_SESSION['strProductID1'][$i]."' " ; 
                     $resultSQL1 = mysqli_query($connect , $strSQL1);
                }
+       
   }
 
+  require '../functionDateThai.php' ;
+  
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  date_default_timezone_set("Asia/Bangkok");
+
+  $sToken = "Uv0soCK4s2VPPiO1s8DpbBYp5mHdqz9Y9p5NUpiPsRZ";
+
+  $product_name = "";
+  $product_quantity="";
+  $unit_name = "";
+  $product_vat = "";
+
+$sql1 = "SELECT d.unit_name ,  sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  , sales.sales_date , sales.sales_RefNo
+FROM sales INNER JOIN product ON sales.product_id = product.product_id
+JOIN product_price AS c ON sales.product_id = c.product_id 
+INNER JOIN unit d ON product.product_unit = d.unit_id
+ WHERE sales.sales_RefNo = '".$das."' " ;
+$query1 = mysqli_query($connect , $sql1) ;
+while ($row1 = mysqli_fetch_array($query1)) { 
+        
+     $product_name =  $product_name.$row1['product_name']."\r"."จำนวน : ".$product_quantity.$row1['product_quantity']. "\r" .$unit_name.$row1['unit_name']."\n" ;      
+     $product_vat = $product_vat.number_format(($row1['product_price_sell'] * 0.07) +  ($row1['product_price_sell'] *  $row1['product_quantity']  )  ,2);
+ $sMessage = '
+<===== ขายสินค้า =====>
+วันที่ขาย : '.datethai($row1['sales_date']).'
+รหัสการขาย :'.$row1['sales_RefNo'].'
+<===== รายการสินค้าที่ขาย =====>
+'.$product_name.'
+ราคารวมภาษี :'.$product_vat.'                     
+';
+             }
+
+          
+
+  
+  $chOne = curl_init(); 
+  curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify"); 
+  curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
+  curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
+  curl_setopt( $chOne, CURLOPT_POST, 1); 
+  curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
+  $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
+  curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
+  curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1); 
+  $result = curl_exec( $chOne ); 
+
+  //Result error 
+  if(curl_error($chOne)) 
+  { 
+       echo 'error:' . curl_error($chOne); 
+  } 
+  else { 
+       $result_ = json_decode($result, true); 
+       echo "status : ".$result_['status']; echo "message : ". $result_['message'];
+     
+  } 
+  curl_close( $chOne );   
 
 mysqli_close();
+
 
 session_destroy();
 

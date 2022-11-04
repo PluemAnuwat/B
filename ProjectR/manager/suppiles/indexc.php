@@ -18,8 +18,8 @@
         <a class="navbar-brand text-white" href="#">
             SUPPILES
         </a>
-        <a type="button" name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
-                width="80px"></a>
+        <a type="button" style="display:none;" name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
+                width="80px"><p class="text-white">เพิ่มซัพพลายเซน</p></a>
     </div>
 </nav>
 

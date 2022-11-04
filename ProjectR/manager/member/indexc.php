@@ -18,8 +18,8 @@
         <a class="navbar-brand text-white" href="#">
             MEMBER
         </a>
-        <a type="button" name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
-                width="80px"></a>
+        <a type="button" name="add" id="add" style="display:none;" class="btn rounded-pill"><img src="../images/add-user.png"
+                width="80px"><p class="text-white">เพิ่มสมาชิก</p></a>
     </div>
 </nav>
 

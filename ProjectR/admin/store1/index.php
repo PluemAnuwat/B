@@ -99,7 +99,7 @@ $query2  = mysqli_query($con, $sql2);
                     <div class="col-md-7 card padding-y-sm card ">
                         <ul class="nav bg radius nav-pills nav-fill mb-3 bg" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active show" data-toggle="pill" href="#nav-tab-card">
+                                <a class="nav-link active show" data-toggle="pill" href="?page=<?= $_GET['page'] ?>">
                                     <i class="fa fa-tags"></i> ทั้งหมด</a>
                             </li>
                             <?php while ($row = mysqli_fetch_assoc($query2)) {  ?>
@@ -165,6 +165,7 @@ $query2  = mysqli_query($con, $sql2);
                                             <th scope="col" width="120">Qty</th>
                                             <th scope="col" width="120">Price</th>
                                             <th scope="col" width="120">Note</th>
+                               
                                             <th scope="col" class="text-right" width="200">Delete</th>
                                         </tr>
                                     </thead>
@@ -187,15 +188,16 @@ $query2  = mysqli_query($con, $sql2);
                                              WHERE a.product_id = '".$_SESSION["strProductID1"][$i]."' ";
 											$objQuery = mysqli_query($con , $strSQL);
 											$objResult = mysqli_fetch_array($objQuery);
-											$Total = $_SESSION["strQty1"][$i] * $objResult["product_price_cost"];
+											$Total = $_SESSION["strQty1"][$i] * $objResult["product_price_sell"];
 											$VatTotal =  (($Total * $Vat)  + $Total) ;  
 											$SumTotal = $SumTotal + $Total;
 											
                                             
 										?>
 
+                               
 
-                                        <tr>
+                                    <tr>
                                             <td>
                                                 <figure class="media">
                                                     <div class="img-wrap"><img src="..\product\image\<?= $objResult['product_img']; ?>"
@@ -223,13 +225,11 @@ $query2  = mysqli_query($con, $sql2);
                                             </td>
                                             <td>
                                                 <div class="price-wrap">
-                                                    <var class="price">
-                                                        <?php if( $_SESSION["strQty1"][$i] >  $objResult['product_quantity'] ){ ?>
-                                                        <a>ไม่พอ</a>
-                                                        <?php }else{ ?>
-                                                        <a>พอ</a>
-                                                        <?php } ?>
-                                                    </var>
+                                                <?php if( $_SESSION["strQty1"][$i] >  $objResult['product_quantity'] ){ ?>
+                                                    <var class="price text-danger"> ไม่พอ</var>
+                                                <?php }else{  ?>
+                                                    <var class="price">เพียงพอ</var>
+                                                <?php } ?>
                                                 </div> <!-- price-wrap .// -->
                                             </td>
                                             <td class="text-right">
@@ -237,6 +237,7 @@ $query2  = mysqli_query($con, $sql2);
                                                     class="btn btn-outline-danger"> <i class="fa fa-trash"></i></a>
                                             </td>
                                         </tr>
+                                     
                                         <?php
 									}
 								}
@@ -291,7 +292,33 @@ $query2  = mysqli_query($con, $sql2);
                             ;
                             font-weight: bold;
                         }
+                        .modal
+                        {
+                        position: fixed;
+                        top: 50%; 
+                        left: 0%;
+                        }
                         </style>
+
+
+                   
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                        
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                            <div class="modal-body">
+                                <p>Some text in the modal.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                            </div>
+                            </div>
+                            
+                        </div>
+                        </div>
+
                         <nav class="navbar navbar-expand-lg navbar-light bg-light">
                             <div class="container-fluid">
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -305,10 +332,10 @@ $query2  = mysqli_query($con, $sql2);
                                                 value="8" onclick="inputnum(this.value)">
                                             <input class="btn btn-secondary mt-2"
                                                 style="width:20%;height:20%;font-size:20px;" type="button" id="txt"
-                                                value="9" onclick="inputnum(this.value)">
-                                            <a class="btn mt-2 btn-danger" style="width:20%;height:20%;font-size:20px;"
-                                                type="button"><img src="../images/budget.png"
-                                                    style="width:50%;height:50%;"></a>
+                                                value="9" onclick="inputnum(this.value)">                       
+                                            <button class="btn mt-2 btn-danger" style="width:20%;height:20%;font-size:20px;"
+                                                type="reset"><img src="../images/cleaning.png"
+                                                    style="width:50%;height:50%;"></button>
                                         </div>
                                         <div class="col-md-12">
                                             <input class="btn btn-secondary mt-2"
@@ -334,9 +361,9 @@ $query2  = mysqli_query($con, $sql2);
                                             <input class="btn btn-secondary mt-2"
                                                 style="width:20%;height:20%;font-size:20px;" type="button" id="txt"
                                                 value="3" onclick="inputnum(this.value)">
-                                            <a class="btn mt-2 btn-primary" style="width:20%;height:20%;font-size:20px;"
-                                                type="button"><img src="../images/budget.png"
-                                                    style="width:50%;height:50%;"></a>
+                                            <button disabled type="button" class="btn mt-2 btn-primary" style="width:20%;height:20%;font-size:20px;" data-toggle="modal" data-target="#myModal"
+                                                type="button"><img src="../images/customer.png"
+                                                    style="width:50%;height:50%;"></button>
                                         </div>
                                         <div class="col-md-12">
                                             <input class="btn btn-secondary mt-2"

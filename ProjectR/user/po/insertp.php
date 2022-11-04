@@ -1,7 +1,8 @@
 <?php
 $connect = mysqli_connect("localhost","root","akom2006","project");
 // mysqli_select_db("project");
-$strSQL = "SELECT * FROM product INNER JOIN product_quantity ON product.product_id = product_quantity.product_id INNER JOIN unit ON product.product_unit = unit.unit_id";
+$strSQL = "SELECT * FROM product INNER JOIN product_quantity ON product.product_id = product_quantity.product_id 
+INNER JOIN unit ON product.product_unit = unit.unit_id";
 $objQuery = mysqli_query($connect , $strSQL)  or die(mysqli_error());
 ?>
 
@@ -105,12 +106,8 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
             <?php
                     $sql = "SELECT * FROM suppiles ";
                     $query =  mysqli_query($connect, $sql);
-                    foreach ($query as $data) :
-                    if($data['suppiles_name'] == '-'){?>
-            <option value="<?= $data['suppiles_id'] ?>"><?= $data['suppiles_company']?></option>
-            <?php }else{ ?>
-                <option value="<?= $data['suppiles_id'] ?>"><?= $data['suppiles_name']?></option>
-          <?php  } ?>
+                    foreach ($query as $data)  : ?>
+            <option value="<?= $data['suppiles_id'] ?>"><?= $data['suppiles_name']?></option>
             <?php endforeach; ?>
         </select>
 
@@ -192,7 +189,7 @@ for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
         <tr>
             <td colspan="3"></td>
             <td class="text-center">รวมทั้งสิ้น</td>
-            <td class="text-end"><?php echo number_format(($SumTotal * 0.07) + $SumTotal,2) ?></td>
+            <td class="text-end" name="product_total"><?php echo number_format(($SumTotal * 0.07) + $SumTotal,2) ?></td>
             <td></td>
         </tr>
     </table>

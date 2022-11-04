@@ -2,7 +2,8 @@
 <?php
 if (isset($_GET['good_RefNo']) && !empty($_GET['good_RefNo'])) {
   $good_RefNo = $_GET['good_RefNo'];
-  $sql = "SELECT *  , sum(c.product_price_cost * a.product_quantity ) as qty ,
+  $sql = "SELECT *  
+  , sum(c.product_price_cost * a.product_quantity ) as qty ,
   sum(c.product_price_cost )  as sum ,
   sum(c.product_price_cost * a.product_quantity ) * 0.07 + sum(c.product_price_cost * a.product_quantity ) as vat ,
   sum(c.product_price_cost * a.product_quantity ) * 0.07 as vatt
@@ -28,6 +29,7 @@ date_default_timezone_set('Asia/Bangkok');
             </td>
         </tr>
         <tr>
+            <td>ลำดับ</td>
             <td>รหัสสินค้า</td>
             <td>ชื่อสินค้า</td>
             <td>วันที่ผลิต</td>
@@ -39,10 +41,11 @@ date_default_timezone_set('Asia/Bangkok');
         <tbody>
 
             <?php
+                        $i=1;
                        $sql = "SELECT *
                        ,(d.product_price_cost * a.product_quantity) as plusel ,
                         a.product_quantity AS product_qty 
-                        FROM   goods_detailproduct a join goods aaa ON a.goods_detailproid = aaa.good_id    
+                        FROM   goods_detailproduct a join goods aaa ON a.good_id = aaa.good_id    
                         JOIN product b ON a.product_id = b.product_id 
                         JOIN product_price d ON a.product_id = d.product_id 
                         WHERE aaa.good_RefNo = '$good_RefNo'";
@@ -63,11 +66,12 @@ date_default_timezone_set('Asia/Bangkok');
                     ?>
             <tr>
                 <input type="hidden" name="good_RefNo[]" value="<?= $rowp['good_RefNo']?>">
+                <td class="col-1"><?php echo  $i++ ; ?></td>
                 <td class="col-1"> <input type="hidden" name="product_id[]"
                         value="<?= $rowp['product_id'] ?>"><?php echo $rowp['product_id'] ?></td>
                 <td class="col-3"><a name="product_name[$product_id]"><?= $rowp['product_name'] ?></a></td>
                 <td class="col-1"><input type='text' class="dateInput  form-control "  name="product_start_date[]" /></td>
-                <td class="col-1"><input type='text'  class="dateInput form-control   name="product_end_date[]" /></td>
+                <td class="col-1"><input type='text'  class="dateInput form-control" name="product_end_date[]" /></td>
                 <td class="col-1"><input type="hidden" name="product_quantity[]" 
                         value="<?= $rowp['product_quantity'] ?>"><?php echo  $rowp['product_quantity'] ?></td>
                 <td class="col-1"><input type="hidden" name="product_price_cost[]"

@@ -17,12 +17,21 @@ $connect = mysqli_connect("localhost","root","akom2006","project");
   {
 	  if($_SESSION["strProductID4000"][$i] != "")
 	  {
+		$strSQLShow = "SELECT * FROM product a INNER JOIN product_price b ON a.product_id = b.product_id 
+		WHERE a.product_id = '".$_SESSION["strProductID4000"][$i]."' ";
+		$objQuery = mysqli_query($connect , $strSQLShow)  or die(mysqli_error());
+		$objResult = mysqli_fetch_array($objQuery);
+		$Total = $_SESSION["strQty"][$i] * $objResult["product_price_cost"];
+		$SumTotal = $SumTotal + $Total;
+		$Real = (($SumTotal * 0.07) + $SumTotal);
+
 			  $strSQL = "
-				INSERT INTO po_detailproduct (po_id,product_id,product_quantity)
+				INSERT INTO po_detailproduct (po_id,product_id,product_quantity,product_total)
 				VALUES
-				('".$strOrderID."','".$_SESSION["strProductID4000"][$i]."','".$_SESSION["strQty"][$i]."') 
+				('".$strOrderID."','".$_SESSION["strProductID4000"][$i]."','".$_SESSION["strQty"][$i]."','".$Total."') 
 			  ";
 			  mysqli_query($connect , $strSQL) or die(mysqli_error());
+
 	  }else{
 		echo "<script type='text/javascript'>alert('ไม่มีรายการสินค้า');</script>";
 		header("location:index.php?page=po");
