@@ -36,7 +36,7 @@ $rp = mysqli_query($connect, $qp);
         <div id="alert_message"></div>
         <form method="POST">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="table table-striped table-bordered table-hover" id="example">
                         <thead>
                             <tr class="text-nowrap">
                                 <th>ลำดับ</th>
@@ -67,3 +67,37 @@ $rp = mysqli_query($connect, $qp);
             </form>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": {
+            "sProcessing": "กำลังดำเนินการ...",
+            "sLengthMenu": "แสดง_MENU_ แถว",
+            "sZeroRecords": "ไม่พบข้อมูล",
+            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+            "sInfoPostFix": "",
+            "sSearch": "ค้นหา:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "เริ่มต้น",
+                "sPrevious": "ก่อนหน้า",
+                "sNext": "ถัดไป",
+                "sLast": "สุดท้าย"
+            }
+        }
+    });
+    $('#example').DataTable();
+
+    $('#example')
+        .removeClass('display')
+        .addClass('table table-bordered');
+});
+
+
+
+</script>

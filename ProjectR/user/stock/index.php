@@ -14,6 +14,8 @@
                               include('inserts.php');
                             } elseif (isset($_GET['function']) && $_GET['function'] == 'update') {
                               include('updates.php');
+                            } elseif (isset($_GET['function']) && $_GET['function'] == 'delete') {
+                              include('delete.php');
                             } else {
                               include('indexs.php');
                           }

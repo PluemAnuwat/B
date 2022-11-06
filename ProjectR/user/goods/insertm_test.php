@@ -11,56 +11,63 @@ require 'functionthaitoeng.php';
 // exit;
 
 foreach ($_POST['product_id'] as $key =>  $value) {
-    // $product_start_date = date('Y-m-d H:i:s',strtotime($_POST['product_start_date'][$key]));
-    //   $product_end_date = date('Y-m-d H:i:s',strtotime($_POST['product_end_date'][$key]));
-
-      // print_r($product_start_date);
-    // print_r($product_end_date);
 
     $date = date('Y-m-d');
-    if ($product_start_date == '') {
+    
+    $product_start_date = thaistart1($_POST['product_start_date'][$key]);
+    $product_end_date = thaistart1($_POST['product_end_date'][$key]);
+    
+       if($product_start_date == '' && $product_end_date == ''){
         $product_start_date = date('Y-m-d',strtotime($date));
         $product_end_date = date('Y-m-d', strtotime(@$now . "+3 years"));
-    } else if($product_start_date != '' & $product_end_date != '') {
-        $product_start_date = date('Y-m-d' , strtotime($_POST['product_start_date'][$key]));
-        $product_end_date = date('Y-m-d' , strtotime($_POST['product_end_date'][$key]));
-    }else if($product_start_date != '' & $product_end_date == ''){
-        $product_start_date = date('Y-m-d' , strtotime($_POST['product_start_date'][$key]));
-        $product_end_date = date('Y-m-d', strtotime(@$now . "+3 years"));
-    }
+       }
 
-    print_r($product_start_date);
-    print_r($product_end_date);
-    // print_r(thaistart1($product_end_date));
-    exit;
+    // if ($product_start_date == '') {
+    //     $product_start_date = date('Y-m-d',strtotime($date));
+    //     $product_end_date = date('Y-m-d', strtotime(@$now . "+3 years"));
+    // } else if($product_start_date != '' & $product_end_date != '') {
+    //     $product_start_date = date('Y-m-d' , strtotime($_POST['product_start_date'][$key]));
+    //     $product_end_date = date('Y-m-d' , strtotime($_POST['product_end_date'][$key]));
+    // }else if($product_start_date != '' & $product_end_date == ''){
+    //     $product_start_date = date('Y-m-d' , strtotime($_POST['product_start_date'][$key]));
+    //     $product_end_date = date('Y-m-d', strtotime(@$now . "+3 years"));
+    // }
 
 
-    $sql1 = "INSERT INTO product_date (product_start_date , product_end_date , product_create_date , product_id , good_RefNo)  
-                values('$product_start_date' ,'$product_end_date' , '$date' , '{$value}','{$_POST['good_RefNo'][$key]}')";
+    $sql1 = "INSERT INTO product_date (status , product_start_date , product_end_date , product_create_date , product_id , good_RefNo)  
+                values('0' , '$product_start_date' ,'$product_end_date' , '$date' , '{$value}','{$_POST['good_RefNo'][$key]}')";
     $query1 = mysqli_query($connect, $sql1);
 
     // echo '<pre> ' . print_r($sql1, 1) . '</pre>';
     //  exit;
 
-    $sql1111 = "UPDATE  goods_detailproduct
-     SET product_start_date = '$product_start_date'  , product_end_date = '$product_end_date'  
+    $sql1111 = "UPDATE  goods_detailproduct  SET product_start_date = '$product_start_date'  , product_end_date = '$product_end_date'  
       WHERE  good_id = '{$value}' )";  
     $query1111 = mysqli_query($connect, $sql1111);
-    // echo $product_end_date ; 
-    //  exit;
 
     $sql200 = "UPDATE po_detailproduct SET product_start_date = '$product_start_date' , product_end_date = '$product_end_date' WHERE product_id = '{$value}'";
     $res200 = mysqli_query($connect, $sql200);
 
-    $sqll = "SELECT * FROM product_quantity WHERE product_id  = '{$value}' ";
+    $sqll = "SELECT * FROM product_quantity WHERE product_id  = '{$value}'  ";
     $queryy = mysqli_query($connect, $sqll);
     $result = mysqli_fetch_assoc($queryy);
 
+    $sqll123 = "SELECT * FROM product WHERE product_id  = '{$value}'  ";
+    $queryy123 = mysqli_query($connect, $sqll123);
+    $result123 = mysqli_fetch_assoc($queryy123);
 
-    $oldnet =  $result['product_quantity'];
-    $newnet = $oldnet + $_POST['product_quantity'][$key];
-    $sql9 = "UPDATE product_quantity SET product_quantity = '$newnet'   , good_RefNo = '{$_POST['good_RefNo'][$key]}' WHERE product_id  = '{$value}'";
+
+    $newnet = $_POST['product_quantity'][$key];
+    $sql9 = "UPDATE product_quantity SET product_quantity = '$newnet' , status = '0'   , good_RefNo = '{$_POST['good_RefNo'][$key]}' WHERE product_id  = '{$value}' AND po_RefNo = '{$_POST['po_RefNo'][$key]}' ";
     $resuu = mysqli_query($connect, $sql9);
+    // print_r($_POST);
+    // print_r($sql9);
+    // exit;
+    
+    $oldnet =  $result123['product_quantity'];
+    $newnet = $oldnet + $_POST['product_quantity'][$key];
+    $sqlproduct = "UPDATE product SET product_quantity = '$newnet'    WHERE product_id  = '{$value}' ";
+    $resuproduct = mysqli_query($connect, $sqlproduct);
     
   
     ini_set('display_errors', 1);
@@ -91,7 +98,7 @@ while ($row1 = mysqli_fetch_array($query1)) {
 
           
      
-             $sql2 = "SELECT * 
+             $sql2 = "SELECT * , goods_detailproduct.product_quantity AS product_quantity
              FROM goods INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id
              INNER JOIN product  ON goods_detailproduct.product_id = product.product_id
              INNER JOIN unit ON product.product_unit = unit.unit_id
@@ -112,7 +119,7 @@ while ($row1 = mysqli_fetch_array($query1)) {
 
         $sMessage1 = '
 <----- รายการสินค้าเข้าสต็อก ----->
-วันที่รับสินค้า : '.datethai($date).'
+วันที่รับสินค้า : '.datethai(date('Y-m-d H:i:s')).'
 หมายเลขใบรับสินค้า :'.$_POST['good_RefNo'][$key].'
 <====== รายการ ======>   
 ' .$product_name. "\n
@@ -141,12 +148,6 @@ else {
 } 
 curl_close( $chOne );   
 
-
-// exit;
-
-
-
-// exit;
 
 $sql10 = "UPDATE goods SET good_status = '1' , good_create = '$date' WHERE good_RefNo = '{$_POST['good_RefNo'][$key]}'";
 $query10 = mysqli_query($connect, $sql10);

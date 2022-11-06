@@ -11,7 +11,7 @@
 </style>
 
 <?php $connect = mysqli_connect("localhost", "root", "akom2006", "project"); 
-require '../functionDateThai.php'; 
+require 'functionDateThaiOnTime.php'; 
 ?>
 
 <?php $sql ="SELECT * FROM po ORDER BY po_id DESC ";
@@ -49,7 +49,7 @@ require '../functionDateThai.php';
         <tr>
             <td class="col-2"><?php echo  $row['po_RefNo'] ?></td>
             <td class="col-2"><?php echo  datethai($row['po_create']) ?></td>
-            <td class="col-4">
+            <td class="col-5">
                 <?php $sql1 = "SELECT * FROM po AS a 
                 INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
                 INNER JOIN product AS c ON b.product_id = c.product_id
@@ -61,7 +61,7 @@ require '../functionDateThai.php';
                  } ?>
             </td>
             <td class="">
-                <?php $sql1 = "SELECT * FROM po AS a 
+                <?php $sql1 = "SELECT * ,b.product_quantity AS product_quantity  FROM po AS a 
                 INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
                 INNER JOIN product AS c ON b.product_id = c.product_id
                 INNER JOIN unit AS d ON c.product_unit = d.unit_id
@@ -85,7 +85,7 @@ require '../functionDateThai.php';
             <td scope="row">
             <a href="?page=<?= $_GET['page'] ?>&function=detail&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/detail.png" width="20px"></a>  
             <?php if($row['po_status'] != 'สั่งแล้ว' &&  $row['po_status'] != 'รับสินค้าแล้ว' &&  $row['po_status'] != 'ยกเลิก') { ?>
-            <a href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/delete.png" width="20px"></a>  
+            <a onclick="return confirm('ต้องการสั่งซื้อหรือไม่ ??')" href="?page=<?= $_GET['page'] ?>&function=delete&po_RefNo=<?= $row['po_RefNo'] ?>"><img src="../images/delete.png" width="20px"></a>  
             <?php } ?>
             </td>
         </tr>

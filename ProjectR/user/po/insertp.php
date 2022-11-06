@@ -1,14 +1,16 @@
-<?php
-$connect = mysqli_connect("localhost","root","akom2006","project");
-// mysqli_select_db("project");
-$strSQL = "SELECT * FROM product INNER JOIN product_quantity ON product.product_id = product_quantity.product_id 
-INNER JOIN unit ON product.product_unit = unit.unit_id";
-$objQuery = mysqli_query($connect , $strSQL)  or die(mysqli_error());
-?>
 
 <?php
 session_start();
 ?>
+<?php
+$connect = mysqli_connect("localhost","root","akom2006","project");
+// mysqli_select_db("project");
+$strSQL = "SELECT * FROM product 
+  INNER JOIN product_reorder  ON product.product_id = product_reorder.product_id
+INNER JOIN unit ON product.product_unit = unit.unit_id";
+$objQuery = mysqli_query($connect , $strSQL)  or die(mysqli_error());
+?>
+
 
 <form action="insertsqlp.php" method="post">
 
@@ -49,17 +51,21 @@ session_start();
                         <tr>
                             <th>ชื่อสินค้า</th>
                             <th>จำนวนสินค้า</th>
+                            <th>จุดสั่งซื้อ</th>
                             <th>ลงรายการสั่งซื้อ</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                       while($objResult = mysqli_fetch_array($objQuery))
+                      
+                    //   print_r($objResult);
                       {
                       ?>
                         <tr>
                             <td><?php echo $objResult["product_name"];?></td>
                             <td class="text-center"><?php echo $objResult["product_quantity"];?>    <?php echo $objResult["unit_name"] ; ?></td>
+                            <td class="text-center"><?php echo $objResult["point"];?></td>
                             <td><a href="order.php?product_id=<?php echo $objResult["product_id"];?>"><img src="../images/check.png" width="10%"></a></td>
                         </tr>
                         <?php
@@ -100,6 +106,7 @@ $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 
 
 
 <div class="row">
+
     <div class="col-md-6">
         ซัพพลายเซน
         <select type="text" class="form-control" name="po_saler">
@@ -155,7 +162,8 @@ for($i=0;$i<=(int)$_SESSION["intLine4000"];$i++)
         <?php
   if($_SESSION["strProductID4000"][$i] != "")
   {
-  $strSQL = "SELECT * FROM product a JOIN product_price b ON a.product_id = b.product_id WHERE a.product_id = '".$_SESSION["strProductID4000"][$i]."' ";
+  $strSQL = "SELECT * FROM product a JOIN product_price b ON a.product_id = b.product_id 
+  WHERE a.product_id = '".$_SESSION["strProductID4000"][$i]."' ";
   $objQuery = mysqli_query($connect , $strSQL)  or die(mysqli_error());
   $objResult = mysqli_fetch_array($objQuery);
   $Total = $_SESSION["strQty"][$i] * $objResult["product_price_cost"];

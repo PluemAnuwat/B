@@ -14,8 +14,8 @@
 
 <?php $sql ="SELECT * , 
 CASE  
-WHEN  a.good_status = 0 THEN 'รอส่งสิินค้า' 
-WHEN  a.good_status = 1 THEN 'ส่งสินค้าไปแล้ว'
+WHEN  a.good_status = 0 THEN 'รอส่ง' 
+WHEN  a.good_status = 1 THEN 'ส่งแล้ว'
 END AS status ,
 count(a.good_RefNo) AS count 
 FROM goods a 
@@ -42,8 +42,8 @@ GROUP BY  a.good_RefNo DESC";
         <tr>
             <th scope="col">ลำดับ</th>
             <th scope="col">วันที่ออกใบรับสินค้า</th>
-            <th scope="col">หมายเลขใบรับ</th>
-            <th scope="col">หมายเลขใบสั่งซื้อ</th>
+            <th scope="col">หมายเลขใบสั่งซื้อ / หมายเลขใบรับ</th>
+            <!-- <th scope="col">หมายเลขใบสั่งซื้อ</th> -->
             <th scope="col">รายการสินค้า</th>
             <th scope="col">จำนวน</th>
             <!-- <th scope="col">จำนวนรายการ</th> -->
@@ -57,7 +57,7 @@ GROUP BY  a.good_RefNo DESC";
     <tbody>
         <?php 
     $i = 1 ;
-    require '../functionDateThai.php'; 
+    require 'functionDateThaiOnTime.php'; 
     while ($row = mysqli_fetch_array($result)) { ?>
         <tr>
             <td scope="row"><?php echo $i++ ?></td>
@@ -66,9 +66,9 @@ GROUP BY  a.good_RefNo DESC";
             <?php }else{ ?>
             <td scope="row"><?php echo datethai($row['good_create']) ?></td>
             <?php } ?>
-            <td scope="row"><?php echo $row['good_RefNo']?></td>
-            <td scope="row"><?php echo $row['po_RefNo']?></td>
-            <td scope="row">
+            <td scope="row"><?php echo $row['po_RefNo'] ; echo "<br>" ; echo $row['good_RefNo']?></td>
+            <!-- <td scope="row"><?php echo $row['po_RefNo']?></td> -->
+            <td scope="row" class="col-4">
             <?php $sql1 = "SELECT * FROM goods 
                             INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id
                             INNER JOIN product ON goods_detailproduct.product_id = product.product_id
@@ -80,7 +80,7 @@ GROUP BY  a.good_RefNo DESC";
                   <?php } ?>
                   </td>
             <td scope="row">
-            <?php $sql1 = "SELECT * FROM goods 
+            <?php $sql1 = "SELECT * , goods_detailproduct.product_quantity AS product_quantity FROM goods 
                             INNER JOIN goods_detailproduct ON goods.good_id = goods_detailproduct.good_id
                             INNER JOIN product ON goods_detailproduct.product_id = product.product_id
                             WHERE goods.good_RefNo = '".$row['good_RefNo']."'";
@@ -93,9 +93,9 @@ GROUP BY  a.good_RefNo DESC";
             <!-- <td scope="row"><?php echo $row['count']?></td>  -->
             <td scope="row"><?php echo $row['po_buyer']?></td>
             <?php if ($row['good_status'] == 0) { ?>
-            <td class="col-2"><a class="text-danger"><img src="../images/waithands.png" width="30px;"><?php echo  $row['status'] ?></a></td>
+            <td class="col-1"><a class="text-danger"><img src="../images/waithands.png" width="30px;"><br><?php echo  $row['status'] ?></a></td>
             <!-- <td scope="row"> ยกเลิกได้ </td> -->
-          <td><a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/prepare.png" width="30px"></a>
+            <td><a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/prepare.png" width="30px"></a>
           <!-- <td scope="row"><a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/delete.png" width="30px"></a></td> -->
             <?php } else {  ?>
             <td class="col-2"><a class="text-success"><img src="../images/handsok.png" width="30px;"><?php echo  $row['status'] ?></a></td>

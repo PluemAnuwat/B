@@ -1,7 +1,7 @@
 <?php
 //fetch.php
 $connect = mysqli_connect("localhost", "root", "akom2006", "project");
-$columns = array('suppiles_name', 'suppiles_company','suppiles_phone','suppiles_email');
+$columns = array('suppiles_name', 'suppiles_company','suppiles_phone','suppiles_email','description');
 
 $query = "SELECT * FROM suppiles ";
 
@@ -11,6 +11,7 @@ if(isset($_POST["search"]["value"]))
  WHERE suppiles_name LIKE "%'.$_POST["search"]["value"].'%" 
  OR suppiles_company LIKE "%'.$_POST["search"]["value"].'%" 
  OR suppiles_phone LIKE "%'.$_POST["search"]["value"].'%" 
+ OR description LIKE "%'.$_POST["search"]["value"].'%" 
  ';
 }
 
@@ -44,6 +45,7 @@ while($row = mysqli_fetch_array($result))
  $sub_array[] = '<div contenteditable class="update" data-suppiles_id="'.$row["suppiles_id"].'" data-column="suppiles_company">' . $row["suppiles_company"] . '</div>';
  $sub_array[] = '<div contenteditable class="update" data-suppiles_id="'.$row["suppiles_id"].'" data-column="suppiles_phone">' . $row["suppiles_phone"] . '</div>';
  $sub_array[] = '<div contenteditable class="update" data-suppiles_id="'.$row["suppiles_id"].'" data-column="suppiles_email">' . $row["suppiles_email"] . '</div>';
+ $sub_array[] = '<div contenteditable class="update" data-suppiles_id="'.$row["suppiles_id"].'" data-column="description">' . $row["description"] . '</div>';
  $sub_array[] = '<button type="button"  name="delete" class="delete" style="border:none;" suppiles_id="'.$row["suppiles_id"].'"><img src="../images/delete.png" width="20px"></button>';
  $data[] = $sub_array; 
 }

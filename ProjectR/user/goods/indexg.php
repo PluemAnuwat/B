@@ -14,7 +14,7 @@
 
 <?php 
 
-$sql = "SELECT DISTINCT(b.po_RefNo) , b.po_create , 
+$sql = "SELECT DISTINCT(b.po_RefNo) , b.po_create , a.good_RefNo ,
 CASE 
 WHEN
     a.good_create  IS NULL   THEN 'ยังไม่ได้จัดเตรียมสินค้า' 
@@ -46,11 +46,12 @@ $result = mysqli_query($connect , $sql);
             <th scope="col">จำนวน</th>
             <th scope="col">ผู้สั่งซื้อ</th>
             <th scope="col">สถานะของใบรับสินค้า</th>
+            <th scope="col">รายละเอียด</th>
         </tr>
     </thead>
     <tbody>
         <?php 
-        require '../functionDateThai.php';
+        require 'functionDateThaiOnTime.php';
     $no = 1 ;
     while ($row = mysqli_fetch_array($result)) {
         $row_date = $row['product_start_date'] ; 
@@ -60,7 +61,7 @@ $result = mysqli_query($connect , $sql);
             <td><?php echo $no++; ?></td>
             <td style="text-align:center;"><?php echo $row['po_RefNo']?></td>
             <td><?php echo DateThai($row['po_create']); ?></td>
-            <td>
+            <td class="col-5">
             <?php 
                 $sqlproduct = "SELECT  * FROM  goods_detailproduct b
                  JOIN product c ON b.product_id = c.product_id JOIN goods d ON d.good_id = b.good_id WHERE b.po_RefNo = '".$row['po_RefNo']."'";
@@ -72,7 +73,7 @@ $result = mysqli_query($connect , $sql);
             </td>
             <td class="text-center">
             <?php 
-                $sqlproduct = "SELECT  * FROM  goods_detailproduct b
+                $sqlproduct = "SELECT  * , b.product_quantity AS product_quantity  FROM  goods_detailproduct b
                  JOIN product c ON b.product_id = c.product_id JOIN goods d ON d.good_id = b.good_id WHERE b.po_RefNo = '".$row['po_RefNo']."'";
                  $queryproduct = mysqli_query($connect , $sqlproduct); 
                 while ($rowproduct = mysqli_fetch_array($queryproduct)) { ?>            
@@ -81,7 +82,7 @@ $result = mysqli_query($connect , $sql);
             </td>
             <td>
             <?php 
-                $sqlproduct = "SELECT  * FROM  goods_detailproduct b
+                $sqlproduct = "SELECT  DISTINCT(po_buyer) FROM  goods_detailproduct b
                  JOIN product c ON b.product_id = c.product_id JOIN goods d ON d.good_id = b.good_id WHERE b.po_RefNo = '".$row['po_RefNo']."'";
                  $queryproduct = mysqli_query($connect , $sqlproduct); 
                 while ($rowproduct = mysqli_fetch_array($queryproduct)) { ?>            
@@ -93,10 +94,7 @@ $result = mysqli_query($connect , $sql);
                 <?php }else{ ?>
                     <td class="text-success">   <?php echo $row['msgstatus'] ; ?>     </td> 
                     <?php } ?>
-
-   
-
-      
+<td>  <a href="?page=<?= $_GET['page'] ?>&function=detail&good_RefNo=<?= $row['good_RefNo'] ?>"><img src="../images/detail.png" width="20px"></a>  </td>
     </tr>
 
 

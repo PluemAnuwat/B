@@ -1,4 +1,9 @@
 <?php $connect = mysqli_connect("localhost", "root", "akom2006", "project"); ?>
+<style>
+    .dateInput{
+        display: inline-block;
+    }
+</style>
 <?php
 if (isset($_GET['good_RefNo']) && !empty($_GET['good_RefNo'])) {
   $good_RefNo = $_GET['good_RefNo'];
@@ -21,8 +26,8 @@ date_default_timezone_set('Asia/Bangkok');
 <form class="forms-sample" enctype="multipart/form-data" method="POST" action="?page=manager_goods_test&function=insert">
 <a href=javascript:history.back(1)><img src="../images/back1.png" width="60px"></a>
     <button style="border:none;" class="mr-2"><img src="../images/yes.png" width="60px;"></button>
-    <a class="text-danger ">ถ้าไม่ใส่วันเดือนปีที่ผลิต กับ วันที่หมดอายุ ระบบจะทำการกำหนดเอาวันที่ปัจจุัน กับ นับไปอีก 3 ปี มากำหนดแทน</a>
-    <table class="table table-hover table-bordered text-center" id="">
+    <a class="text-danger ">ถ้าไม่ใส่วันเดือนปีที่ผลิต กับ วันที่หมดอายุ ระบบจะทำการกำหนดเอาวันที่ปัจจุันเป็นวันที่ผลิต กับ นับอีก 3 ปี จากวันปัจจุบันเป็นวันหมดอายุ</a>
+    <table class="table table-hover table-bordered " id="">
         <tr>
             <td colspan="7">
                 <strong>รายการสินค้า</strong>
@@ -42,9 +47,9 @@ date_default_timezone_set('Asia/Bangkok');
 
             <?php
                         $i=1;
-                       $sql = "SELECT *
+                       $sql = "SELECT * 
                        ,(d.product_price_cost * a.product_quantity) as plusel ,
-                        a.product_quantity AS product_qty 
+                       a.product_quantity AS product_quantity
                         FROM   goods_detailproduct a join goods aaa ON a.good_id = aaa.good_id    
                         JOIN product b ON a.product_id = b.product_id 
                         JOIN product_price d ON a.product_id = d.product_id 
@@ -66,36 +71,39 @@ date_default_timezone_set('Asia/Bangkok');
                     ?>
             <tr>
                 <input type="hidden" name="good_RefNo[]" value="<?= $rowp['good_RefNo']?>">
-                <td class="col-1"><?php echo  $i++ ; ?></td>
-                <td class="col-1"> <input type="hidden" name="product_id[]"
+                <input type="hidden" name="po_RefNo[]" value="<?= $rowp['po_RefNo']?>">
+                <td class="col"><?php echo  $i++ ; ?></td>
+                <td class="col"> <input type="hidden" name="product_id[]"
                         value="<?= $rowp['product_id'] ?>"><?php echo $rowp['product_id'] ?></td>
-                <td class="col-3"><a name="product_name[$product_id]"><?= $rowp['product_name'] ?></a></td>
-                <td class="col-1"><input type='text' class="dateInput  form-control "  name="product_start_date[]" /></td>
-                <td class="col-1"><input type='text'  class="dateInput form-control" name="product_end_date[]" /></td>
-                <td class="col-1"><input type="hidden" name="product_quantity[]" 
+                <td class="col-5"><a name="product_name[$product_id]"><?= $rowp['product_name'] ?></a></td>
+                <td class="col-2 text-end" ><input type='text' class="dateInput  form-control "  name="product_start_date[]" autocomplete="off" /></td>
+                <td class="col-2 text-end"><input type='text'  class="dateInput form-control" name="product_end_date[]" autocomplete="off" /></td>
+                <!-- <td class="col-2 text-end" ><input type='date' class="  form-control "  name="product_start_date[]" autocomplete="off" /></td> -->
+                <!-- <td class="col-2 text-end"><input type='date'  class=" form-control" name="product_end_date[]" autocomplete="off" /></td> -->
+                <td class="col-1 text-end"><input type="hidden" name="product_quantity[]" 
                         value="<?= $rowp['product_quantity'] ?>"><?php echo  $rowp['product_quantity'] ?></td>
-                <td class="col-1"><input type="hidden" name="product_price_cost[]"
+                <td class="col-1 text-end"><input type="hidden" name="product_price_cost[]"
                         value="<?= $rowp['product_price_cost'] ?>"><?php echo  number_format($rowp['product_price_cost'],2) ?></td>
                 </td>
-                <td class="col-1"><?php echo  number_format($rowp['plusel'],2) ?></td>
+                <td class="col-1 text-end"><?php echo  number_format($rowp['plusel'],2) ?></td>
             </tr>
             <?php } ?>
 
         </tbody>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="6"></td>
             <td>ราคารวม</td>
-            <td><?php echo number_format($result1['qty'], 2) ?></td>
+            <td class="text-end"><?php echo number_format($result1['qty'], 2) ?> บาท</td>
         </tr>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="6"></td>
             <td>ภาษี(7%)</td>
-            <td><?php echo number_format($result1['vatt'], 2) ?> บาท</td>
+            <td class="text-end"><?php echo number_format($result1['vatt'], 2) ?> บาท</td>
         </tr>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="6"></td>
             <td>ราคารวมภาษี</td>
-            <td><?php echo number_format($result1['vat'], 2) ?> บาท</td>
+            <td class="text-end"><?php echo number_format($result1['vat'], 2) ?> บาท</td>
         </tr>
     </table>
 </form>
@@ -171,6 +179,7 @@ $(function(){
     var dateBefore=null;
     $(".dateInput").datepicker({
         dateFormat: 'dd-mm-yy',
+        buttonText: "เลือก",
         showOn: 'button',
 //      buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif',
         buttonImageOnly: false,

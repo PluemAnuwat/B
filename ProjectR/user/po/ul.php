@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a type="button" class="btn rounded-pill " href="../index.php">
+                    <a type="button" class="btn rounded-pill " href="../">
                         <img src="../images/home.png" width="100px" height="100px">
                         <p>หน้าหลัก</p>
                     </a>

@@ -1,5 +1,6 @@
 <?php
 $n = 10;
+date_default_timezone_set('Asia/Bangkok');
 function getName($n)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -36,7 +37,7 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
 
     
             $sqlinsert = "INSERT INTO goods(good_RefNo  , po_buyer , good_status)
-                    values( '$good_RefNo'  , '$result[po_buyer]' , '0')";
+                    values( 'GO-$good_RefNo'  , '$result[po_buyer]' , '0')";
 
             $query2 = mysqli_query($connect, $sqlinsert);
 
@@ -45,9 +46,9 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
             $sqlinsert1 = "INSERT INTO goods_detailproduct(po_id , po_RefNo , product_id , product_quantity , product_total , good_id , po_create )
                     values('$result[po_id]' , '$result[po_RefNo]' , '$result[product_id]' , '$result[product_quantity]','$vat','$new_po_id' , '$date' )";
                     
-            //                 print_r($sqlinsert1);
-            // exit;
-
+            $sqlinsertqty = "INSERT INTO product_quantity(product_id , po_RefNo)
+            VALUES('".$result['product_id']."' , '$result[po_RefNo]')";
+             $queryqty = mysqli_query($connect, $sqlinsertqty);
 
             $query2 = mysqli_query($connect, $sqlinsert1);
         
@@ -68,7 +69,7 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
             $sToken = "Uv0soCK4s2VPPiO1s8DpbBYp5mHdqz9Y9p5NUpiPsRZ";
         
         
-        require '../functionDateThai.php'; 
+        require 'functionDateThaiOnTime.php'; 
         
         $con = mysqli_connect("localhost", "root", "akom2006", "project");
 
@@ -90,7 +91,7 @@ if (isset($_GET['po_RefNo']) && !empty($_GET['po_RefNo'])) {
             $i=1;
 
 
-                         $sql2 = "SELECT * 
+                         $sql2 = "SELECT * , po_detailproduct.product_quantity AS product_quantity
                          FROM po_detailproduct  INNER JOIN po ON po_detailproduct.po_id = po.po_id
                          INNER JOIN product ON po_detailproduct.product_id = product.product_id
                          INNER JOIN unit ON product.product_unit = unit.unit_id

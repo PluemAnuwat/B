@@ -11,7 +11,7 @@
 </style>
 
 <?php $connect = mysqli_connect("localhost", "root", "akom2006", "project");
-require '../functionDateThai.php';  ?>
+require 'functionDateThaiOnTime.php';  ?>
 
 <?php $sql ="SELECT * ,a.po_saler,c.suppiles_id,c.suppiles_name AS suppiles_name FROM po a 
 INNER JOIN po_detailproduct b ON a.po_id = b.po_id 
@@ -52,7 +52,7 @@ INNER JOIN suppiles c ON a.po_saler = c.suppiles_id
         <tr>
             <td scope="row"><?php echo datethai($row['po_create'])?></td>
             <td scope="row"><?php echo $row['po_RefNo']?></td>
-            <td class="col-4">
+            <td class="col-5">
                 <?php $sql1 = "SELECT * FROM po AS a 
                 INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
                 INNER JOIN product AS c ON b.product_id = c.product_id
@@ -64,7 +64,7 @@ INNER JOIN suppiles c ON a.po_saler = c.suppiles_id
                  } ?>
             </td>
             <td class="">
-                <?php $sql1 = "SELECT * FROM po AS a 
+                <?php $sql1 = "SELECT * ,b.product_quantity AS product_quantity FROM po AS a 
                 INNER JOIN po_detailproduct AS b ON a.po_id = b.po_id
                 INNER JOIN product AS c ON b.product_id = c.product_id
                 INNER JOIN unit AS d ON c.product_unit = d.unit_id

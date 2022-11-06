@@ -46,11 +46,12 @@
    ?>
 <?php
    $connect = mysqli_connect("localhost", "root", "akom2006", "project");
-   $sql = "SELECT * , DATEDIFF(b.product_end_date,b.product_start_date) AS datediff 
+   $sql = "SELECT * , DATEDIFF(b.product_end_date,b.product_start_date) AS datediff ,
+   a.product_quantity AS product_quantity
    FROM product AS a INNER JOIN product_date b ON a.product_id = b.product_id  
    INNER JOIN product_quantity AS c ON a.product_id = c.product_id   
    INNER JOIN product_reorder AS bbb ON a.product_id = bbb.product_id
-   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id GROUP BY a.product_id ";
+   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id WHERE c.status = '0' GROUP BY a.product_id ";
    $result = mysqli_query($connect , $sql); 
    ?>
 <nav class="navbar navbar-light bgc">
@@ -67,20 +68,23 @@
     <thead>
         <tr>
             <th>ลำดับ</th>
+            <!-- <th>หมายเลขใบรับสินค้า</th> -->
             <th>รายการ</th>
-            <th>จำนวนสินค้า</th>
+            <th>จำนวนสินค้าทั้งหมด</th>
             <th>ราคาทุน</th>
             <th>ราคาขาย</th>
             <th>กำไร</th>
             <th>วันเดือนปีที่ผลิต</th>
             <th>วันเดือนปีที่หมดอายุ</th>
             <th>แจ้งหมดอายุ</th>
+            <th>จำนวนสินค้าที่ต้องตัดสต็อกทิ้ง</th>
             <th>จุดสั่งซื้อที่กำหนด</th>
             <th>จุดสั่งซื้อ</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-    <?php $i = 1;
+        <?php $i = 1;
       $profit = 0;
       while ($row = mysqli_fetch_array($result)) {
       $profit = $row['product_price_sell'] - $row['product_price_cost'];
@@ -88,18 +92,20 @@
 
         <tr>
             <td><?php echo $i++ ?></td>
+            <!-- <td><?php echo  $row['good_RefNo'] ?></td> -->
             <td><?php echo  $row['product_name'] ?></td>
             <td><?php echo $row['product_quantity'] ?> <?php echo $row['unit_name'] ?></td>
             <td><?php echo  number_format($row['product_price_cost'], 2) ?></td>
             <td><?php echo  number_format($row['product_price_sell'], 2) ?></td>
             <td>
                 <?php if($profit <= 0 && $row['product_price_sell'] >  $row['product_price_cost']  ){ ?>
-                    <a class="text-danger"><?php echo "กำหนดราคา" ?></td></a>
-                    <?php } else if($row['product_price_sell'] <  $row['product_price_cost'] ){ ?>
-                        <a class="text-danger"><?php echo "" ?><?php echo $profit ; ?></td></a>
-                <?php } else{ ?>
+                <a class="text-danger"><?php echo "กำหนดราคา" ?>
+            </td></a>
+            <?php } else if($row['product_price_sell'] <  $row['product_price_cost'] ){ ?>
+            <a class="text-danger"><?php echo "" ?><?php echo $profit ; ?></td></a>
+            <?php } else{ ?>
             <?php echo  number_format($profit, 2) ?></td>
-                <?php } ?>
+            <?php } ?>
             <td><?php echo  datethai($row['product_start_date']) ?></td>
             <td><?php echo  datethai($row['product_end_date']) ?></td>
             <?php
@@ -130,6 +136,21 @@
             <?php break;
             } ?>
             <?php } ?>
+            <td>
+                <?php 
+$atycut = "SELECT c.product_quantity as qtycut
+FROM product AS a 
+INNER JOIN product_date AS b ON a.product_id = b.product_id
+INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
+WHERE b.good_RefNo = '".$row['good_RefNo']."' AND b.product_id = '".$row['product_id']."' AND NOW() <= b.product_end_date ";
+                        $querycut = mysqli_query($connect , $atycut);
+                        $numcut = mysqli_num_rows($querycut);
+                        // print_r($numcut);
+                        while($resultcut = mysqli_fetch_array($querycut)){ 
+                        ?>
+                <?php echo $resultcut['qtycut'] ;  ?>
+                <?php } ?>
+            </td>
             <?php
             $productqty = $row['product_quantity'];
             $point = $row['point'];
@@ -141,9 +162,16 @@
             <td colspan=""><?php echo "ยังไม่ถึงจุดสั่งซื้อ" ?></td>
             <?php } 
             ?>
+            <td>
+                <?php if($numcut){ ?>
+                <a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>&product_id=<?= $row['product_id']?>"><img
+                        src="../images/delete.png" width="20px"></a>
+                <?php } ?>
+
+            </td>
         </tr>
 
-    <?php } ?>
+        <?php } ?>
     </tbody>
 </table>
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="

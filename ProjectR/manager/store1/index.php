@@ -43,15 +43,15 @@
 $con = mysqli_connect("localhost", "root", "akom2006", "project");
 if (isset($_GET['cate_id']) & isset($_GET['cate_name'])) {
   $cate_id = $_GET['cate_id'];
-  $sql = "SELECT * , a.product_id , b.product_price_id , b.product_price_cost as product_price_cost  
+  $sql = "SELECT * , a.product_quantity AS product_quantity , a.product_id , b.product_price_id , b.product_price_cost as product_price_cost  
   FROM product a join product_price b ON a.product_id = b.product_id
   JOIN product_quantity c ON a.product_id = c.product_id
-   WHERE product_category ='$cate_id'  ";
+   WHERE product_category ='$cate_id' AND c.status = '0'  ";
   $query = mysqli_query($con, $sql);
 } else {
-  $sql = "SELECT * , a.product_id , b.product_price_id , b.product_price_cost as product_price_cost  
+  $sql = "SELECT * , a.product_quantity AS product_quantity , a.product_id , b.product_price_id , b.product_price_cost as product_price_cost  
   FROM product a join product_price b ON a.product_id = b.product_id 
-  JOIN product_quantity c ON a.product_id = c.product_id
+  JOIN product_quantity c ON a.product_id = c.product_id WHERE  c.status = '0' 
   ";
   $query = mysqli_query($con, $sql);
 }
@@ -184,7 +184,7 @@ $query2  = mysqli_query($con, $sql2);
 											$strSQL = "SELECT * , a.product_id , b.product_price_id , b.product_price_cost as product_price_cost  
 											FROM product AS a 
                                             inner join product_price AS b ON a.product_id = b.product_id 
-                                            inner JOIN product_quantity AS c ON a.product_id = c.product_id 
+                                            -- inner JOIN product_quantity AS c ON a.product_id = c.product_id 
                                              WHERE a.product_id = '".$_SESSION["strProductID1"][$i]."' ";
 											$objQuery = mysqli_query($con , $strSQL);
 											$objResult = mysqli_fetch_array($objQuery);

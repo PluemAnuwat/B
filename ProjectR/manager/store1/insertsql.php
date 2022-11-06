@@ -31,16 +31,28 @@ function random_char($len)
 	  if($_SESSION["strProductID1"][$i] != "")
 	  {
 
+		$strSQL = "SELECT * , a.product_id , b.product_price_id , b.product_price_cost as product_price_cost  
+											FROM product AS a 
+                                            inner join product_price AS b ON a.product_id = b.product_id 
+                                             WHERE a.product_id = '".$_SESSION["strProductID1"][$i]."' ";
+											$objQuery = mysqli_query($connect , $strSQL);
+											$objResult = mysqli_fetch_array($objQuery);
+          $Total = $_SESSION["strQty1"][$i] * $objResult["product_price_sell"];
+          $Vat = 0.07 ;
+          $VatTotal =  (($Total * $Vat)  + $Total) ;  
+          $SumTotal = $SumTotal + $Total;
+          $moneyget = $_POST['sales_get'] - $VatTotal ;
+
                     $das = random_char(10);
 			$strSQL = "
 				INSERT INTO sales (sales_RefNo , sales_date,sales_get,product_quantity,customer_id,product_id,sales_change,product_total,user_login)
 				VALUES
-				('".$das."' , '".date("Y-m-d H:i:s")."','".$_POST['sales_get']."','".$_SESSION["strQty1"][$i]."','".$_POST['customer_id']."','".$_SESSION["strProductID1"][$i]."','','".$VatTotal."','".$_SESSION['user_login']."') 
+				('".$das."' , '".date("Y-m-d H:i:s")."','".$_POST['sales_get']."','".$_SESSION["strQty1"][$i]."','".$_POST['customer_id']."','".$_SESSION["strProductID1"][$i]."','$moneyget','".$VatTotal."','".$_SESSION['user_login']."') 
 			";
 				$resultSQL = mysqli_query($connect , $strSQL);
 
 
-               $strQTY = "SELECT * FROM product_quantity";
+               $strQTY = "SELECT * FROM product WHERE product_id = '".$_SESSION["strProductID1"][$i]."'";
                $resultQTY = mysqli_query($connect  , $strQTY);
                $queryQTY = mysqli_fetch_array($resultQTY);
 
@@ -48,7 +60,7 @@ function random_char($len)
                $newqty = $oldqty - $_SESSION['strQty1'][$i]; 
 
                $strSQL1 = "
-                    UPDATE product_quantity SET product_quantity = '$newqty' WHERE product_id = '".$_SESSION['strProductID1'][$i]."' " ; 
+                    UPDATE product SET product_quantity = '$newqty' WHERE product_id = '".$_SESSION['strProductID1'][$i]."' " ; 
                     $resultSQL1 = mysqli_query($connect , $strSQL1);
                }
        

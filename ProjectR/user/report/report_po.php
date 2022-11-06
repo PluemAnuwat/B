@@ -74,11 +74,13 @@ if ($report == "") {
 		// 		  INNER JOIN product_price cc ON b.product_id = cc.product_id   WHERE a.po_create>= '$ds' AND a.po_create<='$de' ";
         //           				 print_r($sql);
 
-            $sql = "SELECT DISTINCT(a.po_RefNo) , a.po_create 
+            $sql = "SELECT DISTINCT(a.po_RefNo) , a.po_create  , a.po_saler , a.po_buyer , a.po_status 
             FROM po a INNER JOIN po_detailproduct b ON a.po_id = b.po_id 
             INNER JOIN suppiles c ON a.po_saler = c.suppiles_id
             INNER JOIN product_price d ON b.product_id = d.product_id
             WHERE a.po_create>= '$ds' AND a.po_create<='$de' ";
+            // print_r($sql);
+            // exit;
 
 	} 
 }else if ($report == 2) {
@@ -107,14 +109,20 @@ if ($report == "") {
 } else if ($report == 6) {
 	if ($ds == "" && $de == "") {
 		$date = date("Y/m/d");
-		$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (product_quantity * product_price_sell ) AS qtysell 
-        FROM product AS a INNER JOIN product_quantity AS b ON a.product_id = b.product_id 
-        INNER JOIN product_price AS c ON a.product_id = c.product_id INNER JOIN product_date AS d ON a.product_id = d.product_id group by a.product_id";
+		$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (a.product_quantity * product_price_sell ) AS qtysell  
+        FROM product AS a 
+        INNER JOIN product_price AS c ON a.product_id = c.product_id 
+        INNER JOIN product_date AS d ON a.product_id = d.product_id 
+        INNER JOIN unit AS u ON a.product_unit = u.unit_id
+        group by a.product_id";
 		
 } else if ($ds != "" && $de != "") {
-	$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (product_quantity * product_price_sell ) AS qtysell 
-    FROM product AS a INNER JOIN product_quantity AS b ON a.product_id = b.product_id 
-    INNER JOIN product_price AS c ON a.product_id = c.product_id INNER JOIN product_date AS d ON a.product_id = d.product_id group by a.product_id
+	$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (a.product_quantity * product_price_sell ) AS qtysell 
+    FROM product AS a 
+    INNER JOIN product_price AS c ON a.product_id = c.product_id
+     INNER JOIN product_date AS d ON a.product_id = d.product_id 
+     INNER JOIN unit AS u ON a.product_unit = u.unit_id
+     group by a.product_id
 	   WHERE sales_date  BETWEEN '$ds' AND '$de'  ";
 }
 }
@@ -170,8 +178,6 @@ if ($report == "") {
     </form>
 </table>
 <hr>
-<!-- กดหน้ามาแล้วทำไหม เออเรอ -->
-<!-- Warning: mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, null given in C:\AppServ\www\B\ProjectR\user\report\report_po.php on line 187 -->
 
 <div id="divprint">
     <?php
@@ -184,7 +190,7 @@ if ($report == "") {
         width="100%" bgcolor="#FFFFFF" border="1" align="center" height="10">
         <tbody>
             <tr bgcolor=#e5e5e5>
-                <th scope="col">ลำดับ</th>
+                <!-- <th scope="col">ลำดับ</th> -->
                 <th scope="col">เลขที่เอกสาร</th>
                 <th scope="col">วันที่ออกเอกสาร</th>
                 <th scope="col">ชื่อผู้ขาย</th>
@@ -277,17 +283,11 @@ if ($report == "") {
 														
 														?>
                                 <tr bgcolor="#e5e5e5" align="">
-                                    <td class=""><?php echo $i++ ?></td>
+                                    <!-- <td class=""><?php echo $i++ ?></td> -->
                                     <td class="col-2"><?php echo  $rep['po_RefNo'] ?></td>
                                     <td class="col-2"><?php echo datethai($rep['po_create']) ?></td>
                                     <td class="col-2">
-                                        <?php
-																if($rep['suppiles_name'] == '-'){
-																	echo  $rep['suppiles_company'] ;
-																}else{
-																echo  $rep['suppiles_name'] ;
-																}
-																?>
+                                    <?php 	echo  $rep['suppiles_name'] ;?>		
                                     </td>
                                     <td class="col-2">
                                         <?php $sss = "SELECT * FROM po aa INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id  
@@ -300,13 +300,13 @@ if ($report == "") {
                                         <?php } ?>
                                     </td>
                                     <td class="col-1">
-                                        <?php $sss = "SELECT * FROM po aa INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id
+                                        <?php $sss = "SELECT b.product_quantity as product_quantity  FROM po aa INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id
                                 INNER JOIN product AS b ON a.product_id = b.product_id 
                                 INNER JOIN unit u ON b.product_unit = u.unit_id
                                   WHERE aa.po_RefNo = '".$rep['po_RefNo']."'";
                                         $qqq = mysqli_query($connect , $sss);
                                         while($ccc = mysqli_fetch_array($qqq)){ ?>
-                                        <?php echo  $ccc['product_quantity'] ; echo "   " ; echo $ccc['unit_name'] ;   echo '<br>' ; ?>
+                                        <?php echo  $ccc['product_quantity'] ; echo "  " ; echo $ccc['unit_name'] ;   echo '<br>' ; ?>
                                         <?php } ?>
                                     </td>
                                     <td class="col-2 text-right">
@@ -321,7 +321,8 @@ if ($report == "") {
                                         <?php } ?>
                                     </td>
                                     <td class="col-2 text-right">
-                                        <?php $sss = "SELECT * FROM po aa INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id
+                                        <?php $sss = "SELECT * FROM po aa 
+                                        INNER JOIN  po_detailproduct AS a ON aa.po_id = a.po_id
                                 INNER JOIN product AS b ON a.product_id = b.product_id 
                                 INNER JOIN unit u ON b.product_unit = u.unit_id
                                 INNER JOIN product_price d ON b.product_id = d.product_id
@@ -361,6 +362,7 @@ if ($report == "") {
                                         <?php echo  $result['product_name'] ?>
                                         <?php } ?>
                                     </td>
+                                    <td>
                                     <?php $sql = "SELECT sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  FROM sales INNER JOIN product ON sales.product_id = product.product_id
 																 JOIN product_price AS c ON sales.product_id = c.product_id 
 																 WHERE sales_RefNo = '".$rep['sales_RefNo']."'    " ;
@@ -369,8 +371,24 @@ if ($report == "") {
                                     <?php echo  $result['product_price_sell'] ?>
                                     <?php } ?>
                                     </td>
-                                    <td><?php echo  $result['product_quantity'] ?></td>
-                                    <td><?php echo  $result['product_price_sell'] *  $result['product_quantity'] ?></td>
+                                        <td>
+                                        <?php $sql = "SELECT sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  FROM sales INNER JOIN product ON sales.product_id = product.product_id
+                                                                    JOIN product_price AS c ON sales.product_id = c.product_id 
+                                                                    WHERE sales_RefNo = '".$rep['sales_RefNo']."'    " ;
+                                                                        $query = mysqli_query($connect , $sql);
+                                                                        while ($result = mysqli_fetch_array($query)){ ?>
+                                        <?php echo  $result['product_quantity'] ?>
+                                        <?php } ?>
+                                        </td>
+                                        <td>
+                                    <?php $sql = "SELECT sales.product_id , c.product_price_sell , sales.product_quantity , sales.product_total , product.product_name  FROM sales INNER JOIN product ON sales.product_id = product.product_id
+																 JOIN product_price AS c ON sales.product_id = c.product_id 
+																 WHERE sales_RefNo = '".$rep['sales_RefNo']."'    " ;
+																	  $query = mysqli_query($connect , $sql);
+																	  while ($result = mysqli_fetch_array($query)){ ?>
+                                    <?php echo  $result['product_price_sell'] * $result['product_quantity'] ; ?>
+                                    <?php } ?>
+                                    </td>
                                     <td class="col-2"><?php echo  $rep['user_login'] ?></td>
 
                                 </tr>

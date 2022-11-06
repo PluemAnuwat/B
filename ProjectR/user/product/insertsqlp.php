@@ -37,16 +37,16 @@ if (isset($_POST) && !empty($_POST)){
      } else {
           $filename = '';
      }
-     $sqlp = "INSERT INTO product (product_img  ,product_symp,product_category,product_type,product_name,product_unit,product_barcode) 
-     VALUES ('$filename'  ,'$product_symp','$product_category','$product_type','$product_name','$product_unit','$product_barcode')";
+     $sqlp = "INSERT INTO product (product_quantity , product_img  ,product_symp,product_category,product_type,product_name,product_unit,product_barcode) 
+     VALUES ('0' , '$filename'  ,'$product_symp','$product_category','$product_type','$product_name','$product_unit','$product_barcode')";
      $queryp = mysqli_query($con, $sqlp);
 
      $new_product_id = mysqli_insert_id($con);
      $product_quantity = 0;
 
 
-     $sqlpp = "INSERT INTO product_quantity (product_quantity ,  product_id ) VALUE ('$product_quantity' , '$new_product_id')";
-     $querypp = mysqli_query($con, $sqlpp);
+     // $sqlpp = "INSERT INTO product_quantity (product_quantity ,  product_id ) VALUE ('$product_quantity' , '$new_product_id')";
+     // $querypp = mysqli_query($con, $sqlpp);
 
      $product_price_cost =  $_POST['product_price_cost'];
      $product_price_sell = 0;

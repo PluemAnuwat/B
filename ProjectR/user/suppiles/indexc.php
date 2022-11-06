@@ -34,6 +34,7 @@
                     <th scope="col">บริษัท</th>
                     <th scope="col">เบอร์โทรศัพท์</th>
                     <th scope="col">อีเมล์</th>
+                    <th scope="col">ข้อมูล</th>
                     <th scope="col">เมนู</th>
                 </tr>
             </thead>

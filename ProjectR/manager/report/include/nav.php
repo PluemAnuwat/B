@@ -14,7 +14,7 @@
                 </li>
 
                 <li>
-                    <a href="?page=report_po">รายงานการสั่งซื้อ</a>
+                    <a href="?page=report_po">รายงานทั้งหมด</a>
                 </li>
 
                 
