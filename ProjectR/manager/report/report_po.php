@@ -109,14 +109,20 @@ if ($report == "") {
 } else if ($report == 6) {
 	if ($ds == "" && $de == "") {
 		$date = date("Y/m/d");
-		$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (a.product_quantity * product_price_sell ) AS qtysell 
+		$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (a.product_quantity * product_price_sell ) AS qtysell  
         FROM product AS a 
-        INNER JOIN product_price AS c ON a.product_id = c.product_id INNER JOIN product_date AS d ON a.product_id = d.product_id group by a.product_id";
+        INNER JOIN product_price AS c ON a.product_id = c.product_id 
+        INNER JOIN product_date AS d ON a.product_id = d.product_id 
+        INNER JOIN unit AS u ON a.product_unit = u.unit_id
+        group by a.product_id";
 		
 } else if ($ds != "" && $de != "") {
 	$sql = "SELECT * , DATEDIFF(product_end_date ,  now() ) AS datediff  , (a.product_quantity * product_price_sell ) AS qtysell 
     FROM product AS a 
-    INNER JOIN product_price AS c ON a.product_id = c.product_id INNER JOIN product_date AS d ON a.product_id = d.product_id group by a.product_id
+    INNER JOIN product_price AS c ON a.product_id = c.product_id
+     INNER JOIN product_date AS d ON a.product_id = d.product_id 
+     INNER JOIN unit AS u ON a.product_unit = u.unit_id
+     group by a.product_id
 	   WHERE sales_date  BETWEEN '$ds' AND '$de'  ";
 }
 }
@@ -172,8 +178,6 @@ if ($report == "") {
     </form>
 </table>
 <hr>
-<!-- กดหน้ามาแล้วทำไหม เออเรอ -->
-<!-- Warning: mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, null given in C:\AppServ\www\B\ProjectR\user\report\report_po.php on line 187 -->
 
 <div id="divprint">
     <?php
@@ -186,7 +190,7 @@ if ($report == "") {
         width="100%" bgcolor="#FFFFFF" border="1" align="center" height="10">
         <tbody>
             <tr bgcolor=#e5e5e5>
-                <th scope="col">ลำดับ</th>
+                <!-- <th scope="col">ลำดับ</th> -->
                 <th scope="col">เลขที่เอกสาร</th>
                 <th scope="col">วันที่ออกเอกสาร</th>
                 <th scope="col">ชื่อผู้ขาย</th>
@@ -279,7 +283,7 @@ if ($report == "") {
 														
 														?>
                                 <tr bgcolor="#e5e5e5" align="">
-                                    <td class=""><?php echo $i++ ?></td>
+                                    <!-- <td class=""><?php echo $i++ ?></td> -->
                                     <td class="col-2"><?php echo  $rep['po_RefNo'] ?></td>
                                     <td class="col-2"><?php echo datethai($rep['po_create']) ?></td>
                                     <td class="col-2">

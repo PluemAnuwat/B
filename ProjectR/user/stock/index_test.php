@@ -52,7 +52,7 @@
    INNER JOIN product_quantity AS c ON a.product_id = c.product_id   
    INNER JOIN product_reorder AS bbb ON a.product_id = bbb.product_id
    INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id WHERE c.status = '0' GROUP BY a.product_id ";
-   $result = mysqli_query($connect , $sql); 
+  $result = mysqli_query($connect , $sql); 
    ?>
 <nav class="navbar navbar-light bgc">
     <div class="container-fluid">
@@ -108,15 +108,15 @@
             <?php echo  number_format($profit, 2) ?></td>
             <?php } ?>
             <td>
-            <?php 
+                <?php 
                 $sql22 = "SELECT * FROM product_date WHERE  product_id = '".$row['product_id'] ."'" ;
                 $query22 = mysqli_query($connect , $sql22);
                 while ($result22 = mysqli_fetch_array($query22)){
                     echo  ($row['good_RefNo']) ;
                 }
                 ?>
-        </td>
-        <td></td>
+            </td>
+            <td><?php echo  datethai($row['product_start_date']) ?></td>
             <td><?php echo  datethai($row['product_end_date']) ?></td>
             <?php
             $case_notify = status_date_notify(($row['product_end_date']));
@@ -148,12 +148,12 @@
             <?php } ?>
             <td>
                 <?php 
-$atycut = "SELECT c.product_quantity as qtycut
-FROM product AS a 
-INNER JOIN product_date AS b ON a.product_id = b.product_id
-INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
-WHERE  b.product_id = '".$row['product_id']."' 
-AND   b.product_end_date  <= CURDATE()  AND c.product_id = '".$row['product_id']."'   ";
+                        $atycut = "SELECT c.product_quantity as qtycut
+                        FROM product AS a 
+                        INNER JOIN product_date AS b ON a.product_id = b.product_id
+                        INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
+                        WHERE  b.product_id = '".$row['product_id']."' 
+                        AND   b.product_end_date  <= CURDATE()  AND c.product_id = '".$row['product_id']."'   ";
                         $querycut = mysqli_query($connect , $atycut);
                         $numcut = mysqli_num_rows($querycut);
                         print_r($atycut);
@@ -171,7 +171,8 @@ AND   b.product_end_date  <= CURDATE()  AND c.product_id = '".$row['product_id']
             ?>
             <td>
                 <?php if($numcut){ ?>
-                <a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>&product_id=<?= $row['product_id']?>"><img
+                <a
+                    href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>&product_id=<?= $row['product_id']?>"><img
                         src="../images/delete.png" width="20px"></a>
                 <?php } ?>
 

@@ -51,7 +51,10 @@
    FROM product AS a INNER JOIN product_date b ON a.product_id = b.product_id  
    INNER JOIN product_quantity AS c ON a.product_id = c.product_id   
    INNER JOIN product_reorder AS bbb ON a.product_id = bbb.product_id
-   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id WHERE c.status = '0' GROUP BY a.product_id ";
+   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id 
+   WHERE c.status = '0' 
+   GROUP BY a.product_id ";
+        //    print_r($sql);
    $result = mysqli_query($connect , $sql); 
    ?>
 <nav class="navbar navbar-light bgc">
@@ -138,12 +141,13 @@
             <?php } ?>
             <td>
                 <?php 
-$atycut = "SELECT c.product_quantity as qtycut
-FROM product AS a 
-INNER JOIN product_date AS b ON a.product_id = b.product_id
-INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
-WHERE  b.product_id = '".$row['product_id']."'
-AND   b.product_end_date  <= CURDATE()  AND c.product_id = '".$row['product_id']."'   ";
+                    $atycut = "SELECT count(c.product_quantity) as qtycut 
+                    FROM product AS a 
+                    INNER JOIN product_date AS b ON a.product_id = b.product_id
+                    INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
+                    WHERE  b.product_id = '".$row['product_id']."'
+                    AND   b.product_end_date  <= CURDATE() 
+                     AND c.product_id = '".$row['product_id']."' AND b.status = '0'   ";
                         $querycut = mysqli_query($connect , $atycut);
                         $numcut = mysqli_num_rows($querycut);
                         // print_r($atycut);
@@ -160,8 +164,20 @@ AND   b.product_end_date  <= CURDATE()  AND c.product_id = '".$row['product_id']
             <?php } 
             ?>
             <td>
-                <?php if($numcut){ ?>
-                <a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $row['good_RefNo'] ?>&product_id=<?= $row['product_id']?>"><img
+                <?php if($numcut)  {            
+                $atycut = "SELECT count(c.product_quantity) as qtycut , b.good_RefNo
+                FROM product AS a 
+                INNER JOIN product_date AS b ON a.product_id = b.product_id
+                INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
+                WHERE  b.product_id = '".$row['product_id']."'
+                AND   b.product_end_date  <= CURDATE() 
+                 AND c.product_id = '".$row['product_id']."'  AND b.status = '0'  ";
+                    $querycut = mysqli_query($connect , $atycut);
+                    $numcut = mysqli_num_rows($querycut);
+                    $resultcut = mysqli_fetch_array($querycut) ; 
+                    //  print_r($resultcut['good_RefNo']);
+                    ?>
+                <a href="?page=<?= $_GET['page'] ?>&function=delete&good_RefNo=<?= $resultcut['good_RefNo'] ?>&product_id=<?= $row['product_id']?>"><img
                         src="../images/delete.png" width="20px"></a>
                 <?php } ?>
 

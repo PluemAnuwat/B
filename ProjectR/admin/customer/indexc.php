@@ -18,8 +18,8 @@
         <a class="navbar-brand text-white" href="#">
             CUSTOMER
         </a>
-        <a type="button" name="add" id="add"  class="btn rounded-pill"><img src="../images/add-user.png"
-                width="80px"><p class="text-white" >เพิ่มลูกค้า</p></a>
+        <a type="button" name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
+                width="80px"><p class="text-white">เพิ่มลูกค้า</p></a>
     </div>
 </nav>
 

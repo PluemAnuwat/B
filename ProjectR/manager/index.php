@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+?>
 <?php if (isset($_SESSION['user_login']) && !empty($_SESSION['user_login'])) : ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,15 +26,19 @@
     <div class="mt-2">
         <div class="container">
 
-            <a href="store1/index.php"><img src="images/shop.png" class="ms-5" width="15%" height="15%"></a>
+            <!-- <a href="store1/index.php"><img src="images/shop.png" class="ms-5" width="15%" height="15%"></a> -->
 
-            <a class="navbar-brand" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                href="profile/index.php?page=profile"><img src="images/employee.png" class="ms-5" width="10%"
+            <a href="indexsql.php?username=<?= $_SESSION['user_login'] ; ?> "><img src="images/employee.png" class="ms-5" width="10%"
                     height="10%"></a>
             <span class="text-danger" style="font-size:80px;"><?= $_SESSION['posit_login']?></span>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+
+
+
+
+
+
+            <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog ">
 
@@ -51,7 +57,7 @@
 
 
                                 <form action="indexsql.php" method="post" enctype="multipart/form-data">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
 
                                         <div class="form-group">
                                             <label for="fullName" class="col-md-4 col-lg-3 col-form-label">ชื่อ</label>
@@ -86,9 +92,8 @@
                                 </form>
 
 
-
                                 <form action="indexsql2.php" method="post" enctype="multipart/form-data">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="fullName"
                                                 class="col-md-4 col-lg-3 col-form-label">รหัสผ่านเดิม</label>
@@ -136,7 +141,10 @@
 
 
                 </div>
-            </div>
+            </div> -->
+
+
+
 
 
 
@@ -184,21 +192,13 @@
                         </div>
                     </div>
                     <div class="col">
-                            <div class="p-3 border bg-light border-white ">
-                                <a href="stock/index.php?page=stock"><img src="images/in-stock.png" width="70%"
+                            <div class="p-3 border bg-light border-white">
+                                <a href="product/index.php?page=product"><img src="images/product.png" width="70%"
                                         height="70%"></a>
                                 <hr>
-                                <center><span>สต็อกสินค้า</span></center>
+                                <center><span>เมนูสินค้า</span></center>
                             </div>
                         </div>
-                    <!-- <div class="col">
-                        <div class="p-3 border bg-light border-white ">
-                            <a href="price/index.php?page=sale"><img src="images/price.png" width="70%"
-                                    height="70%"></a>
-                            <hr>
-                            <center><span>กำหนดราคาขาย</span></center>
-                        </div>
-                    </div> -->
                 </div>
 
                 <div class="container">
@@ -210,15 +210,15 @@
                                 <hr>
                                 <center><span>เมนูสินค้า</span></center>
                             </div>
-                        </div>
-                        <div class="col">
+                        </div> -->
+                        <!-- <div class="col">
                             <div class="p-3 border bg-light border-white ">
                                 <a href="po/index.php?page=po"><img src="images/order.png" width="70%" height="70%"></a>
                                 <hr>
                                 <center><span>การสั่งซื้อ</span></center>
                             </div>
-                        </div> -->
-                        <!-- <div class="col">
+                        </div>
+                        <div class="col">
                             <div class="p-3 border bg-light border-white ">
                                 <a href="goods/index.php?page=goods"><img src="images/goods.png" width="70%"
                                         height="70%"></a>
@@ -226,7 +226,14 @@
                                 <center><span>ใบรับสินค้า</span></center>
                             </div>
                         </div> -->
-                       
+                        <!-- <div class="col">
+                            <div class="p-3 border bg-light border-white ">
+                                <a href="stock/index.php?page=stock"><img src="images/in-stock.png" width="70%"
+                                        height="70%"></a>
+                                <hr>
+                                <center><span>สต็อกสินค้า</span></center>
+                            </div>
+                        </div> -->
                         <!-- <div class="col">
                             <div class="p-3 border bg-light border-white ">
                                 <a href="line/function_notify1.php"><img src="images/line.png" width="70%"

@@ -22,6 +22,7 @@ $(document).ready(function () {
     html += '<td contenteditable id="data2"></td>';
     html += '<td contenteditable id="data3"></td>';
     html += '<td contenteditable id="data4"></td>';
+    html += '<td contenteditable id="data5"></td>';
     html +=
       '<td><button type="button" name="insert" id="insert" class="btn btn-success btn-xs">เพิ่มข้อมูล</button></td>';
     html += "</tr>";
@@ -33,6 +34,7 @@ $(document).ready(function () {
     var suppiles_company = $("#data2").text();
     var suppiles_phone = $("#data3").text();
     var suppiles_email = $("#data4").text();
+    var description = $("#data5").text();
     if (suppiles_phone != "") {
       $.ajax({
         url: "insert.php",
@@ -42,6 +44,7 @@ $(document).ready(function () {
           suppiles_company: suppiles_company,
           suppiles_phone: suppiles_phone,
           suppiles_email: suppiles_email,
+          description: description,
         },
         success: function (data) {
           $("#alert_message").html(

@@ -57,14 +57,27 @@
                             include('rptsales_month.php');
                           } elseif (isset($_GET['function']) && $_GET['function'] == 'rptsales_year') {
                             include('rptsales_year.php');
-                          // } elseif (isset($_GET['function']) && $_GET['function'] == 'rptsales_chart') {
-                          //   include('rptsales_chart.php');
                           }else{
                           include('report_po.php');
                           }
-                      
-                
-                        }
+                        } elseif (isset($_GET['page']) && $_GET['page'] == 'report_po_yes') {
+                          include('report_po_yes.php');
+                        } elseif (isset($_GET['page']) && $_GET['page'] == 'report_age_yes') {
+                          include('report_age_yes.php');
+                        } elseif (isset($_GET['page']) && $_GET['page'] == 'report_qty_yes') {
+                          include('report_qty_yes.php');
+                        
+                      } elseif (isset($_GET['page']) && $_GET['page'] == 'report_sell_yes') {
+                        if (isset($_GET['function']) && $_GET['function'] == 'rptsales_day') {
+                          include('rptsales_day.php');
+                        } elseif (isset($_GET['function']) && $_GET['function'] == 'rptsales_month') {
+                          include('rptsales_month.php');
+                        } elseif (isset($_GET['function']) && $_GET['function'] == 'rptsales_year') {
+                          include('rptsales_year.php');
+                        }else{
+                        include('report_sell_yes.php');
+                      }
+                    }
                         ?>
 
 

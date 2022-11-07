@@ -18,7 +18,7 @@
         <a class="navbar-brand text-white" href="#">
             SUPPILES
         </a>
-        <a type="button"  name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
+        <a type="button" name="add" id="add" class="btn rounded-pill"><img src="../images/add-user.png"
                 width="80px"><p class="text-white">เพิ่มซัพพลายเซน</p></a>
     </div>
 </nav>
@@ -34,6 +34,7 @@
                     <th scope="col">บริษัท</th>
                     <th scope="col">เบอร์โทรศัพท์</th>
                     <th scope="col">อีเมล์</th>
+                    <th scope="col">ข้อมูล</th>
                     <th scope="col">เมนู</th>
                 </tr>
             </thead>

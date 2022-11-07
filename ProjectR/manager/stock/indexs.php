@@ -51,7 +51,9 @@
    FROM product AS a INNER JOIN product_date b ON a.product_id = b.product_id  
    INNER JOIN product_quantity AS c ON a.product_id = c.product_id   
    INNER JOIN product_reorder AS bbb ON a.product_id = bbb.product_id
-   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id WHERE c.status = '0' GROUP BY a.product_id ";
+   INNER JOIN product_price AS ccc ON a.product_id = ccc.product_id 
+   WHERE c.status = '0' 
+   GROUP BY a.product_id ";
    $result = mysqli_query($connect , $sql); 
    ?>
 <nav class="navbar navbar-light bgc">
@@ -138,23 +140,21 @@
             <?php } ?>
             <td>
                 <?php 
-$atycut = "SELECT c.product_quantity as qtycut
-FROM product AS a 
-INNER JOIN product_date AS b ON a.product_id = b.product_id
-INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
-WHERE b.good_RefNo = '".$row['good_RefNo']."' AND b.product_id = '".$row['product_id']."' AND NOW() <= b.product_end_date ";
+                    $atycut = "SELECT c.product_quantity as qtycut
+                    FROM product AS a 
+                    INNER JOIN product_date AS b ON a.product_id = b.product_id
+                    INNER JOIN product_quantity AS c ON b.good_RefNo = c.good_RefNo
+                    WHERE  b.product_id = '".$row['product_id']."'
+                    AND   b.product_end_date  <= CURDATE()  AND b.product_end_date = (SELECT MIN(product_end_date) FROM product_date)
+                     AND c.product_id = '".$row['product_id']."'   ";
                         $querycut = mysqli_query($connect , $atycut);
                         $numcut = mysqli_num_rows($querycut);
-                        // print_r($numcut);
+                        // print_r($atycut);
                         while($resultcut = mysqli_fetch_array($querycut)){ 
                         ?>
-                <?php echo $resultcut['qtycut'] ;  ?>
+                <?php echo $resultcut['qtycut'] ; echo "<br>" ;  echo "" ; ?>
                 <?php } ?>
             </td>
-            <?php
-            $productqty = $row['product_quantity'];
-            $point = $row['point'];
-                                    ?>
             <td><?php echo $row['point'] ;?></td>
             <?php if ($productqty <= $point) { ?>
             <td colspan="" class="text-danger"><?php echo "ถึงจุดสั่งซื้อ" ?></td>

@@ -124,12 +124,13 @@ while ($row1 = mysqli_fetch_array($query1)) {
        echo "status : ".$result_['status']; echo "message : ". $result_['message'];
      
   } 
-  curl_close( $chOne );   
+
 
 mysqli_close();
+unset($_SESSION['intLine1']);
+unset($_SESSION['strProductID1']);
 
-
-session_destroy();
+// session_destroy();
 
 header("location:index.php?page=po");
 

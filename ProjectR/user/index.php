@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+?>
 <?php if (isset($_SESSION['user_login']) && !empty($_SESSION['user_login'])) : ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -251,5 +253,5 @@
 </html>
 <?php include 'script.php' ?>
 <?php else : ?>
-<!-- <?php include('index.php') ?> -->
+<?php include('index.php') ?>
 <?php endif; ?>
