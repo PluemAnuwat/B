@@ -4,6 +4,7 @@ session_start();
 // print_r($_SESSION);
 ?>
 <?php
+date_default_timezone_set("Asia/Bangkok");
 $connect = mysqli_connect("localhost","root","akom2006","project");
 // mysqli_select_db("project");
 $strSQL = "SELECT * FROM product 

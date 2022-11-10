@@ -65,7 +65,10 @@ function random_char($len)
                }
        
   }
+// r
 
+
+// line
   require '../functionDateThai.php' ;
   
   ini_set('display_errors', 1);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 06, 2022 at 11:14 PM
+-- Generation Time: Nov 05, 2022 at 11:30 AM
 -- Server version: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -103,7 +103,7 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employee_id`, `employee_name`, `employee_phone`, `employee_email`, `username`, `password`, `employee_role`) VALUES
-(4, 'อนุวัฒน์ ดดดดffff', '0641318526', 'pluem@gmail.com', 'ei', '1234', 'เภสัชกร'),
+(4, 'อนุวัฒน์ ', '0641318526', 'pluem@gmail.com', 'ei', '12345', 'เภสัชกร'),
 (5, 'รัตนพร แดงวัน', '0846379821', 'rattanaporn@gmail.com', 'manager', '12345', 'เจ้าของกิจการ'),
 (6, 'ธนาพร เรื่อนก้อน', '0688894217', 'kawe@gmail.com', 'admin', '12345', 'ผู้ดูแลระบบ');
 
@@ -120,6 +120,19 @@ CREATE TABLE `goods` (
   `po_buyer` varchar(300) NOT NULL,
   `good_status` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `goods`
+--
+
+INSERT INTO `goods` (`good_id`, `good_RefNo`, `good_create`, `po_buyer`, `good_status`) VALUES
+(20, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0'),
+(21, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0'),
+(22, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0'),
+(23, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0'),
+(24, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0'),
+(25, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0'),
+(26, 'GO-eISkVIHedx', NULL, 'เภสัชกร', '0');
 
 -- --------------------------------------------------------
 
@@ -140,6 +153,19 @@ CREATE TABLE `goods_detailproduct` (
   `po_create` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `goods_detailproduct`
+--
+
+INSERT INTO `goods_detailproduct` (`goods_detailproid`, `product_id`, `product_start_date`, `product_end_date`, `product_quantity`, `po_id`, `po_RefNo`, `product_total`, `good_id`, `po_create`) VALUES
+(20, '54', NULL, NULL, '2', '14', 'PO-noks0zf8blv7', '', 20, '2022-11-05 04:27:46'),
+(21, '57', NULL, NULL, '1', '14', 'PO-noks0zf8blv7', '', 21, '2022-11-05 04:27:46'),
+(22, '61', NULL, NULL, '4', '14', 'PO-noks0zf8blv7', '', 22, '2022-11-05 04:27:46'),
+(23, '59', NULL, NULL, '1', '14', 'PO-noks0zf8blv7', '', 23, '2022-11-05 04:27:46'),
+(24, '49', NULL, NULL, '2', '14', 'PO-noks0zf8blv7', '', 24, '2022-11-05 04:27:46'),
+(25, '65', NULL, NULL, '2', '14', 'PO-noks0zf8blv7', '', 25, '2022-11-05 04:27:46'),
+(26, '55', NULL, NULL, '1', '14', 'PO-noks0zf8blv7', '', 26, '2022-11-05 04:27:46');
+
 -- --------------------------------------------------------
 
 --
@@ -149,11 +175,18 @@ CREATE TABLE `goods_detailproduct` (
 CREATE TABLE `po` (
   `po_id` int(10) NOT NULL COMMENT 'รหัสการสั่งซื้อ',
   `po_RefNo` varchar(300) NOT NULL COMMENT 'หมายเลขใบสั่งซื้อ',
-  `po_create` datetime NOT NULL COMMENT 'วันที่สั่งซื้อ',
+  `po_create` date NOT NULL COMMENT 'วันที่สั่งซื้อ',
   `po_buyer` varchar(300) NOT NULL COMMENT 'ผู้ขาย',
   `po_saler` varchar(300) NOT NULL COMMENT 'ผู้ซื้อ',
   `po_status` varchar(300) NOT NULL COMMENT 'สถานะ'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `po`
+--
+
+INSERT INTO `po` (`po_id`, `po_RefNo`, `po_create`, `po_buyer`, `po_saler`, `po_status`) VALUES
+(14, 'PO-noks0zf8blv7', '2022-11-05', 'เภสัชกร', '2', 'สั่งแล้ว');
 
 -- --------------------------------------------------------
 
@@ -170,6 +203,19 @@ CREATE TABLE `po_detailproduct` (
   `product_end_date` datetime(6) DEFAULT NULL,
   `product_total` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `po_detailproduct`
+--
+
+INSERT INTO `po_detailproduct` (`po_detailproid`, `po_id`, `product_quantity`, `product_id`, `product_start_date`, `product_end_date`, `product_total`) VALUES
+(23, '14', '2', '54', NULL, NULL, '440'),
+(24, '14', '1', '57', NULL, NULL, '10'),
+(25, '14', '4', '61', NULL, NULL, '2200'),
+(26, '14', '1', '59', NULL, NULL, '230'),
+(27, '14', '2', '49', NULL, NULL, '840'),
+(28, '14', '2', '65', NULL, NULL, '240'),
+(29, '14', '1', '55', NULL, NULL, '320');
 
 -- --------------------------------------------------------
 
@@ -189,13 +235,13 @@ CREATE TABLE `po_status` (
 --
 
 INSERT INTO `po_status` (`po_status_id`, `po_status`, `status_create`, `po_RefNo`) VALUES
-(51, 'สั่งซื้อ', '2022-11-06 21:47:15.000000', 'PO-8a9ftofnqfxw'),
-(52, 'สั่งซื้อ', '2022-11-06 21:50:45.000000', 'PO-rin6duc6z3qa'),
-(53, 'สั่งซื้อ', '2022-11-06 21:50:45.000000', 'PO-rin6duc6z3qa'),
-(54, 'สั่งซื้อ', '2022-11-06 21:50:45.000000', 'PO-rin6duc6z3qa'),
-(55, 'สั่งซื้อ', '2022-11-06 21:50:45.000000', 'PO-rin6duc6z3qa'),
-(56, 'สั่งซื้อ', '2022-11-06 21:50:45.000000', 'PO-rin6duc6z3qa'),
-(57, 'สั่งซื้อ', '2022-11-06 22:03:43.000000', 'PO-ohi5c3j6a8m1');
+(20, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7'),
+(21, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7'),
+(22, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7'),
+(23, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7'),
+(24, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7'),
+(25, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7'),
+(26, 'สั่งซื้อ', '2022-11-05 04:27:46.000000', 'PO-noks0zf8blv7');
 
 -- --------------------------------------------------------
 
@@ -222,27 +268,26 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`product_id`, `product_name`, `product_common`, `product_unit`, `product_type`, `product_category`, `product_symp`, `product_img`, `product_barcode`, `product_quantity`) VALUES
 (45, 'ยาพาราเซตามอล', '', '8', '4', '9', '2', '1667559381parasetamol.jpg', '', '0'),
-(46, 'Medigrip ผ้ายืดรัดข้อเท้า', '', '8', '4', '22', '2', '200166-1_2.png', '', '0'),
-(47, 'PREG-T แผ่นตรวจตั้งครรภ์', '', '8', '4', '2', '2', '148059_1.jpg', '', '0'),
-(48, 'Q LINE เก้าอี้นั่งถ่ายถังพลาสติก', '', '14', '4', '21', '2', '254541_1.jpg', '', '0'),
-(49, 'Certainty เซอร์เทนตี้', '', '14', '4', '2', '2', '222338_3.jpg', '', '0'),
-(50, 'Blackmores แบลคมอร์ส ', '', '6', '4', '2', '2', '063568_1.jpeg', '', '0'),
-(51, 'Nestle Boost Care เครื่องดื่มเสริมเวย์โปรตีน', '', '15', '4', '2', '2', '257192-1 (1).jpg', '', '0'),
-(52, 'tynor รองเท้า D32 Walker Boot', '', '14', '4', '20', '2', '250082-1.png', '', '0'),
-(53, 'Mobility Wheel Chair รถเข็นสำหรับผู้ป่วย', '', '14', '4', '21', '2', '240737_1.jpg', '', '0'),
+(46, 'Medigrip ผ้ายืดรัดข้อเท้า Ankle Support size L', '', '8', '4', '22', '2', '200166-1_2.png', '', '0'),
+(47, 'PREG-T แผ่นตรวจตั้งครรภ์ STRIP (จุ่ม)', '', '8', '4', '2', '2', '148059_1.jpg', '', '0'),
+(48, 'Q LINE เก้าอี้นั่งถ่ายถังพลาสติก PL-901 สีขาว', '', '14', '4', '21', '2', '254541_1.jpg', '', '0'),
+(49, 'Certainty เซอร์เทนตี้ ผ้าอ้อมเทปผู้ใหญ่', '', '14', '4', '2', '2', '222338_3.jpg', '', '0'),
+(50, 'Blackmores แบลคมอร์ส LECITHIN 1200MG 100 เม็ด', '', '6', '4', '2', '2', '063568_1.jpeg', '', '0'),
+(51, 'Nestle Boost Care เครื่องดื่มเสริมเวย์โปรตีน ขนาด 800 กรัม', '', '15', '4', '2', '2', '257192-1 (1).jpg', '', '0'),
+(52, 'tynor รองเท้า D32 Walker Boot Long Size CH', '', '14', '4', '20', '2', '250082-1.png', '', '0'),
+(53, 'Mobility Wheel Chair รถเข็นสำหรับผู้ป่วย ขนาดใหญ่พิเศษ', '', '14', '4', '21', '2', '240737_1.jpg', '', '0'),
 (54, 'Bio-Oil Dry Skin Gel ออยล์ทาผิว ขนาด 50 ml.', '', '15', '4', '6', '2', '273498_1.jpg', '', '0'),
 (55, 'Bio-Oil Dry Skin Gel ออยล์ทาผิว ขนาด 100 ml.', '', '15', '4', '6', '2', '1667559746273498_1.jpg', '', '0'),
-(56, 'อ้วยอัน ยาแคปซูลฟ้าทะลายโจร', '', '6', '4', '2', '2', '000507-1.jpg', '', '0'),
-(57, 'Bakamol บาคามอล', '', '1', '4', '9', '2', '295736_1.jpg', '', '0'),
-(58, 'วังพรม ฟ้าทะลายโจร', '', '8', '4', '19', '2', '268550-1.jpg', '', '0'),
+(56, 'อ้วยอัน ยาแคปซูลฟ้าทะลายโจร 100 แคปซูล', '', '6', '4', '2', '2', '000507-1.jpg', '', '0'),
+(57, 'Bakamol บาคามอล พาราเซตามอล', '', '1', '4', '9', '2', '295736_1.jpg', '', '0'),
+(58, 'วังพรม ฟ้าทะลายโจร ขนาด 100 แคปซูล', '', '8', '4', '19', '2', '268550-1.jpg', '', '0'),
 (59, 'I-Kids Mouthspray for Kids สเปรย์เพื่อช่องปาก', '', '8', '4', '20', '2', '240036_1.jpg', '', '0'),
-(60, 'tynor ลูกยางไม้เท้า ', '', '14', '4', '22', '2', '260665-1.png', '', '0'),
+(60, 'tynor ลูกยางไม้เท้า ขนาด 22 mm L10 POD Crutch', '', '14', '4', '22', '2', '260665-1.png', '', '0'),
 (61, 'APY น้ำมันรำข้าว 500mg ตราอภัยภูเบศร', '', '8', '4', '20', '2', '301469_1.jpg', '', '0'),
-(62, 'Vistra B-Complex Plus Ginseng', '', '15', '4', '2', '2', '183687-1.jpg', '', '0'),
+(62, 'Vistra B-Complex Plus Ginseng 30 เม็ด', '', '15', '4', '2', '2', '183687-1.jpg', '', '0'),
 (63, 'POLAR SPRAY สเปรย์ปรับอากาศ 280 มล.', '', '1', '4', '5', '2', '225452-1.jpg', '', '0'),
-(64, 'SPA CLEAN HM ผลิตภัณฑ์ฆ่าเชื้อ กลิ่นไฮจีนิค', '', '6', '4', '5', '2', '267449-1.jpg', '', '0'),
-(65, 'MAGNATE ชามรูปไต ', '', '14', '4', '21', '2', '016268_1.jpg', '', '0'),
-(66, 'กาวิสคอน', '', '8', '4', '15', '2', 'gaviscon-dual-400x400.jpg', '', '0');
+(64, 'SPA CLEAN HM ผลิตภัณฑ์ฆ่าเชื้อ กลิ่นไฮจีนิค ซอฟท์ 350 มล.', '', '6', '4', '5', '2', '267449-1.jpg', '', '0'),
+(65, 'MAGNATE ชามรูปไต S/L ขนาด 8 นิ้ว', '', '14', '4', '21', '2', '016268_1.jpg', '', '0');
 
 -- --------------------------------------------------------
 
@@ -278,28 +323,27 @@ CREATE TABLE `product_price` (
 --
 
 INSERT INTO `product_price` (`product_price_id`, `product_price_cost`, `product_price_sell`, `product_id`) VALUES
-(45, '90', '100', 45),
-(46, '400', '0', 46),
+(45, '120', '0', 45),
+(46, '450', '0', 46),
 (47, '50', '0', 47),
 (48, '1000', '0', 48),
-(49, '400', '0', 49),
-(50, '300', '0', 50),
-(51, '700', '0', 51),
-(52, '2000', '0', 52),
-(53, '8000', '9000', 53),
-(54, '200', '0', 54),
-(55, '300', '0', 55),
+(49, '420', '0', 49),
+(50, '340', '0', 50),
+(51, '760', '0', 51),
+(52, '2400', '0', 52),
+(53, '7800', '0', 53),
+(54, '220', '0', 54),
+(55, '320', '0', 55),
 (56, '100', '0', 56),
 (57, '10', '0', 57),
-(58, '100', '0', 58),
-(59, '200', '300', 59),
+(58, '120', '0', 58),
+(59, '230', '0', 59),
 (60, '70', '0', 60),
-(61, '600', '700', 61),
-(62, '300', '0', 62),
-(63, '200', '0', 63),
+(61, '550', '600', 61),
+(62, '285', '0', 62),
+(63, '230', '0', 63),
 (64, '80', '0', 64),
-(65, '100', '0', 65),
-(66, '100', '200', 66);
+(65, '120', '0', 65);
 
 -- --------------------------------------------------------
 
@@ -315,6 +359,19 @@ CREATE TABLE `product_quantity` (
   `po_RefNo` varchar(300) NOT NULL,
   `status` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `product_quantity`
+--
+
+INSERT INTO `product_quantity` (`product_quantity_id`, `product_quantity`, `good_RefNo`, `product_id`, `po_RefNo`, `status`) VALUES
+(81, '', '', '54', 'PO-noks0zf8blv7', ''),
+(82, '', '', '57', 'PO-noks0zf8blv7', ''),
+(83, '', '', '61', 'PO-noks0zf8blv7', ''),
+(84, '', '', '59', 'PO-noks0zf8blv7', ''),
+(85, '', '', '49', 'PO-noks0zf8blv7', ''),
+(86, '', '', '65', 'PO-noks0zf8blv7', ''),
+(87, '', '', '55', 'PO-noks0zf8blv7', '');
 
 -- --------------------------------------------------------
 
@@ -333,28 +390,27 @@ CREATE TABLE `product_reorder` (
 --
 
 INSERT INTO `product_reorder` (`product_reorder_id`, `product_id`, `point`) VALUES
-(40, '45', '10'),
-(41, '46', '10'),
-(42, '47', '10'),
+(40, '45', '100'),
+(41, '46', '20'),
+(42, '47', '30'),
 (43, '48', '5'),
-(44, '49', '5'),
-(45, '50', '10'),
-(46, '51', '3'),
-(47, '52', '10'),
+(44, '49', '20'),
+(45, '50', '30'),
+(46, '51', '20'),
+(47, '52', '20'),
 (48, '53', '5'),
-(49, '54', '8'),
-(50, '55', '10'),
-(51, '56', '5'),
-(52, '57', '5'),
-(53, '58', '10'),
-(54, '59', '5'),
-(55, '60', '10'),
-(56, '61', '10'),
-(57, '62', '5'),
-(58, '63', '3'),
-(59, '64', '10'),
-(60, '65', '20'),
-(61, '66', '5');
+(49, '54', '20'),
+(50, '55', '20'),
+(51, '56', '60'),
+(52, '57', '100'),
+(53, '58', '30'),
+(54, '59', '30'),
+(55, '60', '30'),
+(56, '61', '20'),
+(57, '62', '20'),
+(58, '63', '30'),
+(59, '64', '30'),
+(60, '65', '20');
 
 -- --------------------------------------------------------
 
@@ -375,15 +431,6 @@ CREATE TABLE `sales` (
   `user_login` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `sales`
---
-
-INSERT INTO `sales` (`sales_id`, `sales_RefNo`, `sales_date`, `sales_get`, `sales_change`, `product_total`, `product_id`, `customer_id`, `product_quantity`, `user_login`) VALUES
-(2, 'TclG16JSLE', '2022-11-06', '10000', '370', '9630', '53', '1', '1', 'ei'),
-(3, 'HAlwfeXqli', '2022-11-06', '400', '79', '321', '59', '1', '1', 'ei'),
-(4, 'f6Pcz2LojW', '2022-11-06', '', '-749', '749', '61', '1', '1', 'ei');
-
 -- --------------------------------------------------------
 
 --
@@ -395,26 +442,15 @@ CREATE TABLE `suppiles` (
   `suppiles_name` varchar(300) NOT NULL,
   `suppiles_company` varchar(300) NOT NULL,
   `suppiles_phone` varchar(10) NOT NULL,
-  `suppiles_email` varchar(300) NOT NULL,
-  `description` varchar(300) NOT NULL
+  `suppiles_email` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `suppiles`
 --
 
-INSERT INTO `suppiles` (`suppiles_id`, `suppiles_name`, `suppiles_company`, `suppiles_phone`, `suppiles_email`, `description`) VALUES
-(2, 'บริษัท ยา จำกัด', 'บริษัท ยา จำกัด', '0641318885', 'ya.ha@gmail.co.th', ''),
-(3, 'บริษัท จรูญเภสัช จำกัด', 'บริษัท จรูญเภสัช จำกัด', '0-2477-300', '-', 'จำหน่ายเภสัชภัณฑ์ CHALKCAP YUNGJIN เวชสำอาง อาหารภาชนะปิดสนิท'),
-(4, 'บริษัท พาตาร์แลบ (2517) จำกัด', 'บริษัท พาตาร์แลบ (2517) จำกัด', '0-2577-305', '-', 'ผลิตยาแผนปัจจุบัน จัดจำหน่าย มีกลุ่มยาเม็ด ยาน้ำ ยาครีม แคปซูลแข็ง แคปซูลนิ่ม สินค้าหลักเป็นกลุ่มวิตามิน ผลิตยาอื่นๆ อีกกว่า 100 ตำรับ '),
-(5, 'บริษัท แบ็กซ์เตอร์ เมนูแฟคเจอริ่ง (ประเทศไทย) จำกัด', 'บริษัท แบ็กซ์เตอร์ เมนูแฟคเจอริ่ง (ประเทศไทย) จำกัด', '0-2667-050', '-', 'โรงงานผลิตน้ำยาล้างไตทางช่องท้อง'),
-(6, 'บริษัท ไบโอคูร่าโปรดัคชั่นส์ จำกัด', 'บริษัท ไบโอคูร่าโปรดัคชั่นส์ จำกัด', '0-2691-735', '-', 'โลชั่นกันยุง บิโอซิน-อาร์ เทียนไขกันยุง บิโอซิน เทียนไข โบคารี ฮีทติ้ง แคนเดิล เทียนไข โบคารี่ อโรมาเทอราปี แคนเดิล'),
-(7, 'บริษัท โรงงานเภสัชกรรมเกร๊ทเตอร์ฟาร์ม่า จำกัด', 'บริษัท โรงงานเภสัชกรรมเกร๊ทเตอร์ฟาร์ม่า จำกัด', '0-2800-297', '-', 'ผลิตยาแผนปัจจุบัน'),
-(8, 'บริษัท ส เจริญเภสัชเทรดดิ้ง จำกัด', 'บริษัท ส เจริญเภสัชเทรดดิ้ง จำกัด', '0-2221-858', '-', 'ตัวแทนจำหน่ายผลิตภัณฑ์หลาย ประเภท ได้แก่ เวชภัณฑ์ยา ผลิตภัณฑ์ ส่งเสริมสุขภาพ เครื่องสำอาง ที่มีคุณภาพเยี่ยม นำเข้าจากบริษัท ผู้ผลิตต่างประเทศที่มีชื่อเสียง ทุกมุมโลก จากยุโรป อเมริกา เอเชีย ฯลฯ นอกจากนำเข้าสินค้าจากต่างประเทศ บริษัทยังผลิตยา จากโรงงานที่มี มาตรฐาน เพื่อจำหน่ายในประเทศ และส่งออกไปยัง'),
-(9, 'บริษัท มา-ไทย จำกัด', 'บริษัท มา-ไทย จำกัด', '0-2390-204', '-', 'นำเข้ายารักษาโรค'),
-(10, 'บริษัท คอสม่า เมดิคอล จำกัด', 'บริษัท คอสม่า เมดิคอล จำกัด', '0-2367-125', '-', 'ยาแผนโบราณ เครื่องเวชภัณฑ์ เคมีภัณฑ์และเครื่องมือแพทย์'),
-(11, 'บริษัท ซีเมด โปรดักซ์ 1994 จำกัด', 'บริษัท ซีเมด โปรดักซ์ 1994 จำกัด', '0-2618-661', '-', 'ผลิตและจำหน่ายยาแผนปัจจุบัน'),
-(12, 'บริษัท เค แอนด์ ที ฟาร์ม ซัพพลาย จำกัด', 'บริษัท เค แอนด์ ที ฟาร์ม ซัพพลาย จำกัด', '0-2914-357', '-', 'ประกอบกิจการนำเข้าและจำหน่ายเคมีภัณฑ์ยา');
+INSERT INTO `suppiles` (`suppiles_id`, `suppiles_name`, `suppiles_company`, `suppiles_phone`, `suppiles_email`) VALUES
+(2, 'บริษัท ยา จำกัด', 'บริษัท ยา จำกัด', '0641318885', 'ya.ha@gmail.co.th');
 
 -- --------------------------------------------------------
 
@@ -646,62 +682,62 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `good_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `good_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `goods_detailproduct`
 --
 ALTER TABLE `goods_detailproduct`
-  MODIFY `goods_detailproid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `goods_detailproid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `po`
 --
 ALTER TABLE `po`
-  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'รหัสการสั่งซื้อ', AUTO_INCREMENT=45;
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'รหัสการสั่งซื้อ', AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `po_detailproduct`
 --
 ALTER TABLE `po_detailproduct`
-  MODIFY `po_detailproid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `po_detailproid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `po_status`
 --
 ALTER TABLE `po_status`
-  MODIFY `po_status_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `po_status_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 --
 -- AUTO_INCREMENT for table `product_date`
 --
 ALTER TABLE `product_date`
-  MODIFY `product_date_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `product_date_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
-  MODIFY `product_price_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `product_price_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 --
 -- AUTO_INCREMENT for table `product_quantity`
 --
 ALTER TABLE `product_quantity`
-  MODIFY `product_quantity_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `product_quantity_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT for table `product_reorder`
 --
 ALTER TABLE `product_reorder`
-  MODIFY `product_reorder_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `product_reorder_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `suppiles`
 --
 ALTER TABLE `suppiles`
-  MODIFY `suppiles_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `suppiles_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `symptons`
 --
